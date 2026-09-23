@@ -204,13 +204,20 @@
       <h2>O que a vizinhança já reportou</h2>
 
       <div class="balloon-panel">
-        <div class="filters" id="filters">
-          <button class="chip is-active" data-filter="todos">Todos</button>
-          <button class="chip" data-filter="Em análise">Em análise</button>
-          <button class="chip" data-filter="Em andamento">Em andamento</button>
-          <button class="chip" data-filter="Resolvido">Resolvido</button>
-          <button class="chip" data-filter="Respondidos">Respondidos</button>
-          <button class="chip" data-filter="Não respondidos">Não respondidos</button>
+        <div class="filter-dropdown" id="filterDropdown">
+          <button type="button" class="filter-trigger" id="filterTrigger">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M7 12h10M10.5 18h3" stroke="#1746D6" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Filtrar: <strong id="filterTriggerLabel">Todos</strong>
+            <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="filter-menu">
+            <button type="button" class="filter-option is-active" data-filter="todos">Todos</button>
+            <button type="button" class="filter-option" data-filter="Em análise">Em análise</button>
+            <button type="button" class="filter-option" data-filter="Em andamento">Em andamento</button>
+            <button type="button" class="filter-option" data-filter="Resolvido">Resolvido</button>
+            <button type="button" class="filter-option" data-filter="Respondidos">Respondidos</button>
+            <button type="button" class="filter-option" data-filter="Não respondidos">Não respondidos</button>
+          </div>
         </div>
 
         <p class="search-indicator" id="searchIndicator" hidden>

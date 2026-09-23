@@ -47,6 +47,12 @@ Qualquer visitante pode dar uma nota de 1 a 5 estrelas com comentário opcional;
 ## Hero com busca e ferramentas (inspirado no Reclame Aqui)
 A seção inicial ganhou a mesma estrutura da home do Reclame Aqui — busca em destaque + linha de "ferramentas para você" — adaptada à nossa identidade: campo de busca que filtra as ocorrências por rua, bairro, categoria ou palavra-chave (rola até o feed e mostra um indicador "Resultados para..." com opção de limpar), e 4 atalhos (Reportar problema, Ver ocorrências, Avalie o prefeito, Painel da prefeitura).
 
+## Feed com curtidas, comentários e filtro
+Cada relato no feed de ocorrências agora funciona como um mini post de rede social:
+- **👍 Curtir** — substitui o antigo botão de apoio (▲); clique novamente para descurtir. Um clique por navegador, como antes.
+- **💬 Comentar** — abre um painel com os comentários daquele relato e um campo para escrever um novo. Comentários aparecem com o nome de quem está logado (ou "Morador da cidade" se ninguém estiver) e ficam salvos em `localStorage` (`avozdopovo_comentarios`).
+- **Filtrar** — os filtros de status (Em análise, Em andamento, Resolvido, Respondidos, Não respondidos) agora vivem dentro de um único botão dropdown ("Filtrar: Todos ▾"), em vez de vários chips soltos.
+
 ## Três perfis de acesso
 No cadastro (`login.html`), a pessoa escolhe um **tipo de conta**:
 - **Cidadão** — reporta problemas e avalia a gestão do prefeito (padrão).

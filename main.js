@@ -2,6 +2,7 @@
 const STORAGE_KEY = 'avozdopovo_reports';
 const SUPPORTED_KEY = 'avozdopovo_supported';
 const SESSION_KEY = 'avozdopovo_session';
+const COMMENTS_KEY = 'avozdopovo_comentarios';
 
 const CATEGORIES = [
   {
@@ -84,6 +85,30 @@ const SEED_REPORTS = [
   }
 ];
 
+const SEED_COMMENTS = [
+  {
+    id: 'comment-seed-1',
+    reportId: 'seed-1',
+    autor: 'Morador da região',
+    texto: 'Também passo por ali todo dia, já rodei o carro pra desviar desse buraco.',
+    data: '2026-09-12T15:40:00'
+  },
+  {
+    id: 'comment-seed-2',
+    reportId: 'seed-1',
+    autor: 'Vizinho da rua',
+    texto: 'Boa que reportou! Vou apoiar também.',
+    data: '2026-09-13T08:10:00'
+  },
+  {
+    id: 'comment-seed-3',
+    reportId: 'seed-3',
+    autor: 'Moradora da região',
+    texto: 'Que bom que resolveram rápido, essa rua estava bem perigosa à noite.',
+    data: '2026-09-02T19:00:00'
+  }
+];
+
 // ---------- Helpers ----------
 function loadReports(){
   try{
@@ -105,6 +130,31 @@ function loadSupported(){
 }
 function saveSupported(list){
   try{ localStorage.setItem(SUPPORTED_KEY, JSON.stringify(list)); }catch(e){}
+}
+function loadComments(){
+  try{
+    const raw = localStorage.getItem(COMMENTS_KEY);
+    if(!raw){
+      localStorage.setItem(COMMENTS_KEY, JSON.stringify(SEED_COMMENTS));
+      return [...SEED_COMMENTS];
+    }
+    return JSON.parse(raw);
+  }catch(e){
+    return [...SEED_COMMENTS];
+  }
+}
+function saveComments(list){
+  try{ localStorage.setItem(COMMENTS_KEY, JSON.stringify(list)); }catch(e){}
+}
+function getCommentsFor(reportId){
+  return loadComments()
+    .filter(c => c.reportId === reportId)
+    .sort((a, b) => new Date(a.data) - new Date(b.data));
+}
+function addComment(reportId, autor, texto){
+  const comments = loadComments();
+  comments.push({ id: 'comment-' + Date.now(), reportId, autor, texto, data: new Date().toISOString() });
+  saveComments(comments);
 }
 function statusClass(status){
   if(status === 'Resolvido') return 'status-resolvido';
@@ -156,6 +206,7 @@ function renderCategories(){
 // ---------- Feed ----------
 let currentFilter = 'todos';
 let searchQuery = '';
+const openComments = new Set();
 
 function renderStats(reports){
   const total = reports.length;
@@ -236,10 +287,32 @@ function renderFeed(){
         <p class="report-meta">${escapeHtml(r.endereco)} · ${author}</p>
         <p class="report-comment">${escapeHtml(r.comentario)}</p>
         <div class="report-footer">
-          <button class="support-btn ${isSupported ? 'is-supported' : ''}" data-id="${r.id}">
-            ▲ <span>${r.apoios}</span>
+          <button class="like-btn ${isSupported ? 'is-liked' : ''}" data-id="${r.id}" aria-pressed="${isSupported}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10v10H4a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 10l4-7c.8-.3 2 .1 2 1.5V9h5.3a2 2 0 0 1 2 2.4l-1.2 6.5A2 2 0 0 1 17.1 19.5H10a3 3 0 0 1-3-3v-6.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <span>${r.apoios}</span>
+          </button>
+          <button type="button" class="comment-toggle-btn" data-id="${r.id}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <span>${getCommentsFor(r.id).length}</span>
           </button>
           <span class="report-date">${formatDate(r.data)}</span>
+        </div>
+        <div class="comments-panel" data-id="${r.id}" ${openComments.has(r.id) ? '' : 'hidden'}>
+          <div class="comments-list">
+            ${getCommentsFor(r.id).map(c => `
+              <div class="comment-item">
+                <div class="comment-item-top">
+                  <p class="comment-author">${escapeHtml(c.autor)}</p>
+                  <span class="comment-date">${formatDate(c.data)}</span>
+                </div>
+                <p class="comment-text">${escapeHtml(c.texto)}</p>
+              </div>
+            `).join('') || '<p class="muted comments-empty">Seja o primeiro a comentar.</p>'}
+          </div>
+          <form class="comment-form" data-id="${r.id}">
+            <textarea rows="2" placeholder="Escreva um comentário..." required></textarea>
+            <button type="submit" class="btn btn-primary">Comentar</button>
+          </form>
         </div>
         ${r.resposta ? `
         <div class="official-response">
@@ -269,8 +342,29 @@ function renderFeed(){
     </article>`;
   }).join('');
 
-  grid.querySelectorAll('.support-btn').forEach(btn => {
+  grid.querySelectorAll('.like-btn').forEach(btn => {
     btn.addEventListener('click', () => toggleSupport(btn.dataset.id));
+  });
+
+  grid.querySelectorAll('.comment-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      if(openComments.has(id)) openComments.delete(id);
+      else openComments.add(id);
+      renderFeed();
+    });
+  });
+  grid.querySelectorAll('.comment-form').forEach(form => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const textarea = form.querySelector('textarea');
+      const texto = textarea.value.trim();
+      if(!texto) return;
+      const autor = getSession()?.nome || 'Morador da cidade';
+      addComment(form.dataset.id, autor, texto);
+      openComments.add(form.dataset.id);
+      renderFeed();
+    });
   });
 
   grid.querySelectorAll('.respond-btn').forEach(btn => {
@@ -324,16 +418,28 @@ function escapeHtml(str){
 
 // ---------- Filtros ----------
 function setupFilters(){
-  const filters = document.getElementById('filters');
-  if(!filters) return;
-  filters.addEventListener('click', (e) => {
-    const btn = e.target.closest('.chip');
-    if(!btn) return;
-    filters.querySelectorAll('.chip').forEach(c => c.classList.remove('is-active'));
-    btn.classList.add('is-active');
-    currentFilter = btn.dataset.filter;
-    renderFeed();
+  const dropdown = document.getElementById('filterDropdown');
+  const trigger = document.getElementById('filterTrigger');
+  const label = document.getElementById('filterTriggerLabel');
+  if(!dropdown || !trigger) return;
+
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('is-open');
   });
+
+  dropdown.querySelectorAll('.filter-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      dropdown.querySelectorAll('.filter-option').forEach(o => o.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      label.textContent = btn.textContent;
+      currentFilter = btn.dataset.filter;
+      dropdown.classList.remove('is-open');
+      renderFeed();
+    });
+  });
+
+  document.addEventListener('click', () => dropdown.classList.remove('is-open'));
 }
 
 // ---------- Upload de foto ----------
@@ -400,7 +506,9 @@ function setupReportForm(){
     setTimeout(() => { msg.textContent = ''; }, 4000);
 
     currentFilter = 'todos';
-    document.querySelectorAll('.chip').forEach(c => c.classList.toggle('is-active', c.dataset.filter === 'todos'));
+    document.querySelectorAll('.filter-option').forEach(o => o.classList.toggle('is-active', o.dataset.filter === 'todos'));
+    const filterLabel = document.getElementById('filterTriggerLabel');
+    if(filterLabel) filterLabel.textContent = 'Todos';
     renderFeed();
     showToast('Relato enviado com sucesso!');
     document.getElementById('ocorrencias').scrollIntoView({ behavior:'smooth' });
