@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Voz do Povo — Reporte problemas da sua cidade</title>
+<meta name="description" content="Plataforma cidadã para relatar buracos, poda de árvores, iluminação e outros problemas urbanos com fotos e acompanhamento.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%231746D6%22/><text x=%2250%22 y=%2266%22 font-size=%2258%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22>V</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="30" height="30"><path d="M16 2C9 2 4 7.2 4 14c0 8.5 10.4 15.2 11.4 15.8a1.1 1.1 0 0 0 1.2 0C17.6 29.2 28 22.5 28 14 28 7.2 23 2 16 2z" fill="#fff"/><circle cx="16" cy="14" r="5.6" fill="#1746D6"/></svg>
+      </span>
+      <span class="brand-name">A Voz do Povo</span>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="#categorias">Categorias</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#ocorrencias">Ocorrências</a>
+    </nav>
+    <div class="header-actions">
+      <span class="user-chip" id="userChip" hidden></span>
+      <a class="btn btn-ghost" id="loginLink" href="login.html">Entrar</a>
+      <a class="btn btn-primary" href="#reportar">Reportar problema</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Participação cidadã</p>
+        <h1>A cidade escuta quem<br> vive nela todos os dias.</h1>
+        <p class="hero-lede">Viu um buraco na rua, uma árvore precisando de poda ou um poste apagado? Registre em menos de um minuto, com foto e localização, e acompanhe a solução.</p>
+        <div class="hero-cta">
+          <a href="#reportar" class="btn btn-primary btn-lg">Reportar um problema</a>
+          <a href="#ocorrencias" class="btn btn-outline btn-lg">Ver ocorrências da cidade</a>
+        </div>
+        <dl class="hero-stats" id="heroStats">
+          <div><dt id="statTotal">0</dt><dd>relatos enviados</dd></div>
+          <div><dt id="statAndamento">0</dt><dd>em andamento</dd></div>
+          <div><dt id="statResolvido">0</dt><dd>resolvidos</dd></div>
+        </dl>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 420 460" width="100%" role="img">
+          <rect x="0" y="0" width="420" height="460" rx="28" fill="#0F2E99"/>
+          <g opacity="0.5">
+            <rect x="40" y="260" width="46" height="140" fill="#1746D6"/>
+            <rect x="96" y="200" width="46" height="200" fill="#1746D6"/>
+            <rect x="152" y="240" width="46" height="160" fill="#1746D6"/>
+            <rect x="232" y="150" width="52" height="250" fill="#1746D6"/>
+            <rect x="296" y="210" width="46" height="190" fill="#1746D6"/>
+            <rect x="352" y="180" width="34" height="220" fill="#1746D6"/>
+          </g>
+          <circle cx="330" cy="90" r="46" fill="#EEF2FF"/>
+          <g transform="translate(120,150)">
+            <rect x="0" y="0" width="180" height="230" rx="18" fill="#ffffff"/>
+            <rect x="16" y="18" width="148" height="96" rx="10" fill="#DCE4FF"/>
+            <path d="M40 96 L70 66 L92 88 L120 52 L148 96 Z" fill="#1746D6" opacity="0.55"/>
+            <circle cx="52" cy="46" r="9" fill="#F5A623"/>
+            <rect x="16" y="128" width="110" height="12" rx="6" fill="#DCE4FF"/>
+            <rect x="16" y="150" width="80" height="12" rx="6" fill="#DCE4FF"/>
+            <rect x="16" y="184" width="52" height="30" rx="8" fill="#1746D6"/>
+            <rect x="76" y="184" width="52" height="30" rx="8" fill="#EEF2FF"/>
+          </g>
+          <circle cx="70" cy="60" r="5" fill="#EEF2FF"/>
+          <circle cx="100" cy="40" r="3" fill="#EEF2FF"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIAS -->
+  <section class="section" id="categorias">
+    <div class="wrap">
+      <p class="eyebrow">O que você pode relatar</p>
+      <h2>Um canal direto para os problemas do dia a dia</h2>
+      <div class="cat-grid" id="catGrid"><!-- injetado via JS --></div>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section class="section section-tint" id="como-funciona">
+    <div class="wrap">
+      <p class="eyebrow">Como funciona</p>
+      <h2>Da rua até a resolução, em três passos</h2>
+      <ol class="steps">
+        <li>
+          <span class="step-n">1</span>
+          <h3>Registre o problema</h3>
+          <p>Tire uma foto, escreva um comentário curto e informe o local. Leva menos de um minuto.</p>
+        </li>
+        <li>
+          <span class="step-n">2</span>
+          <h3>A equipe responsável avalia</h3>
+          <p>Cada relato é analisado, categorizado e encaminhado para o setor certo da prefeitura.</p>
+        </li>
+        <li>
+          <span class="step-n">3</span>
+          <h3>Você acompanha o status</h3>
+          <p>O relato muda de "em análise" para "em andamento" e "resolvido" — visível para todo mundo.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FORMULÁRIO -->
+  <section class="section" id="reportar">
+    <div class="wrap report-wrap">
+      <div class="report-intro">
+        <p class="eyebrow">Reportar problema</p>
+        <h2>Conte pra gente o que está acontecendo</h2>
+        <p class="muted">Quanto mais detalhes, mais rápido o problema pode ser resolvido. Foto e localização ajudam bastante.</p>
+      </div>
+
+      <form class="report-form" id="reportForm" novalidate>
+        <div class="field">
+          <label for="categoria">Categoria</label>
+          <select id="categoria" name="categoria" required>
+            <option value="" disabled selected>Selecione uma categoria</option>
+            <option value="Buraco na via">Buraco na via</option>
+            <option value="Poda de árvore">Poda de árvore</option>
+            <option value="Iluminação pública">Iluminação pública</option>
+            <option value="Calçada e acessibilidade">Calçada e acessibilidade</option>
+            <option value="Lixo e limpeza">Lixo e limpeza</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="titulo">Título curto</label>
+          <input type="text" id="titulo" name="titulo" maxlength="80" placeholder="Ex.: Buraco grande na Rua das Flores" required>
+        </div>
+
+        <div class="field">
+          <label for="endereco">Local (rua, bairro ou ponto de referência)</label>
+          <input type="text" id="endereco" name="endereco" placeholder="Ex.: Rua das Flores, 120 — Centro" required>
+        </div>
+
+        <div class="field field-full">
+          <label for="comentario">Comentário</label>
+          <textarea id="comentario" name="comentario" rows="4" placeholder="Descreva o problema: há quanto tempo, se oferece risco, etc." required></textarea>
+        </div>
+
+        <div class="field field-full">
+          <label for="foto">Foto do problema (opcional)</label>
+          <div class="upload-box" id="uploadBox">
+            <input type="file" id="foto" name="foto" accept="image/*">
+            <div class="upload-empty" id="uploadEmpty">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 16.5V18a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1.5M12 3v12m0-12 4 4m-4-4-4 4" stroke="#1746D6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Clique para enviar uma foto</span>
+            </div>
+            <img id="uploadPreview" alt="Pré-visualização da foto enviada" hidden>
+          </div>
+        </div>
+
+        <div class="field field-full anon-row">
+          <label class="checkbox">
+            <input type="checkbox" id="anonimo" name="anonimo">
+            <span>Enviar como anônimo</span>
+          </label>
+        </div>
+
+        <div class="field field-full form-actions">
+          <button type="submit" class="btn btn-primary btn-lg">Enviar relato</button>
+          <span class="form-msg" id="formMsg" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FEED -->
+  <section class="section section-tint" id="ocorrencias">
+    <div class="wrap">
+      <div class="feed-head">
+        <div>
+          <p class="eyebrow">Ocorrências da cidade</p>
+          <h2>O que a vizinhança já reportou</h2>
+        </div>
+        <div class="filters" id="filters">
+          <button class="chip is-active" data-filter="todos">Todos</button>
+          <button class="chip" data-filter="Em análise">Em análise</button>
+          <button class="chip" data-filter="Em andamento">Em andamento</button>
+          <button class="chip" data-filter="Resolvido">Resolvido</button>
+        </div>
+      </div>
+
+      <div class="feed-grid" id="feedGrid"><!-- injetado via JS --></div>
+      <p class="feed-empty" id="feedEmpty" hidden>Nenhuma ocorrência encontrada para esse filtro.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <span class="brand-name light">A Voz do Povo</span>
+      <p class="muted-light">Um canal aberto entre quem mora na cidade e quem cuida dela.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#reportar">Reportar problema</a>
+      <a href="#ocorrencias">Ocorrências</a>
+      <a href="login.html">Entrar</a>
+    </div>
+  </div>
+  <p class="footer-copy">© <span id="year"></span> A Voz do Povo. Protótipo de demonstração.</p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

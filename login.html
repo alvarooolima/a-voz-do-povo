@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrar — A Voz do Povo</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%231746D6%22/><text x=%2250%22 y=%2266%22 font-size=%2258%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22>V</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="auth-body">
+
+<div class="auth-shell">
+  <aside class="auth-brand">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="30" height="30"><path d="M16 2C9 2 4 7.2 4 14c0 8.5 10.4 15.2 11.4 15.8a1.1 1.1 0 0 0 1.2 0C17.6 29.2 28 22.5 28 14 28 7.2 23 2 16 2z" fill="#fff"/><circle cx="16" cy="14" r="5.6" fill="#1746D6"/></svg>
+      </span>
+      <span class="brand-name light">A Voz do Povo</span>
+    </a>
+    <div class="auth-brand-copy">
+      <h1>Sua voz muda<br>a cidade.</h1>
+      <p>Entre para acompanhar seus relatos, receber atualizações de status e apoiar ocorrências da sua região.</p>
+    </div>
+    <svg class="auth-brand-art" viewBox="0 0 320 260" aria-hidden="true">
+      <circle cx="250" cy="60" r="70" fill="#ffffff" opacity="0.08"/>
+      <circle cx="40" cy="220" r="90" fill="#ffffff" opacity="0.06"/>
+      <g opacity="0.9">
+        <rect x="30" y="150" width="34" height="90" fill="#ffffff" opacity="0.12"/>
+        <rect x="72" y="120" width="34" height="120" fill="#ffffff" opacity="0.16"/>
+        <rect x="114" y="160" width="34" height="80" fill="#ffffff" opacity="0.12"/>
+        <rect x="164" y="90" width="38" height="150" fill="#ffffff" opacity="0.18"/>
+        <rect x="214" y="140" width="34" height="100" fill="#ffffff" opacity="0.12"/>
+      </g>
+    </svg>
+    <a class="auth-back" href="index.html">← Voltar ao site</a>
+  </aside>
+
+  <main class="auth-main">
+    <div class="auth-card">
+
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab is-active" id="tabLogin" role="tab" aria-selected="true">Entrar</button>
+        <button class="auth-tab" id="tabRegister" role="tab" aria-selected="false">Criar conta</button>
+      </div>
+
+      <!-- LOGIN -->
+      <form class="auth-form" id="loginForm" novalidate>
+        <div class="field">
+          <label for="loginEmail">E-mail</label>
+          <input type="email" id="loginEmail" name="email" placeholder="voce@exemplo.com" required autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label for="loginSenha">Senha</label>
+          <div class="pw-wrap">
+            <input type="password" id="loginSenha" name="senha" placeholder="Sua senha" required autocomplete="current-password" minlength="6">
+            <button type="button" class="pw-toggle" data-target="loginSenha" aria-label="Mostrar senha">👁</button>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="loginCpf">CPF</label>
+            <input type="text" id="loginCpf" name="cpf" placeholder="000.000.000-00" inputmode="numeric" maxlength="14" required>
+          </div>
+          <div class="field">
+            <label for="loginTelefone">Telefone</label>
+            <input type="text" id="loginTelefone" name="telefone" placeholder="(00) 00000-0000" inputmode="numeric" maxlength="15" required>
+          </div>
+        </div>
+
+        <div class="field-inline">
+          <label class="checkbox">
+            <input type="checkbox" id="manterConectado">
+            <span>Manter conectado</span>
+          </label>
+          <button type="button" class="link-btn" id="forgotLink">Esqueci minha senha</button>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Entrar</button>
+        <p class="form-msg" id="loginMsg" role="status" aria-live="polite"></p>
+
+        <p class="auth-switch">Não tem conta? <button type="button" class="link-btn" id="goRegister">Cadastre-se</button></p>
+      </form>
+
+      <!-- ESQUECI A SENHA -->
+      <div class="auth-panel" id="forgotPanel" hidden>
+        <button type="button" class="link-btn back-btn" id="forgotBack">← Voltar para o login</button>
+        <h2>Recuperar senha</h2>
+        <p class="muted">Informe o e-mail cadastrado. Vamos enviar um link para você criar uma nova senha.</p>
+        <form id="forgotForm" novalidate>
+          <div class="field">
+            <label for="forgotEmail">E-mail</label>
+            <input type="email" id="forgotEmail" name="email" placeholder="voce@exemplo.com" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Enviar link de recuperação</button>
+          <p class="form-msg" id="forgotMsg" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <!-- CADASTRO -->
+      <form class="auth-form" id="registerForm" novalidate hidden>
+        <div class="field">
+          <label for="regNome">Nome completo</label>
+          <input type="text" id="regNome" name="nome" placeholder="Seu nome completo" required autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label for="regEmail">E-mail</label>
+          <input type="email" id="regEmail" name="email" placeholder="voce@exemplo.com" required autocomplete="email">
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="regSenha">Senha</label>
+            <input type="password" id="regSenha" name="senha" placeholder="Mínimo 6 caracteres" required minlength="6" autocomplete="new-password">
+          </div>
+          <div class="field">
+            <label for="regSenha2">Confirmar senha</label>
+            <input type="password" id="regSenha2" name="senha2" placeholder="Repita a senha" required minlength="6" autocomplete="new-password">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="regCpf">CPF</label>
+            <input type="text" id="regCpf" name="cpf" placeholder="000.000.000-00" inputmode="numeric" maxlength="14" required>
+          </div>
+          <div class="field">
+            <label for="regTelefone">Telefone</label>
+            <input type="text" id="regTelefone" name="telefone" placeholder="(00) 00000-0000" inputmode="numeric" maxlength="15" required>
+          </div>
+        </div>
+
+        <label class="checkbox terms-check">
+          <input type="checkbox" id="regTermos" required>
+          <span>Li e concordo com os termos de uso e a política de privacidade</span>
+        </label>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Criar conta</button>
+        <p class="form-msg" id="registerMsg" role="status" aria-live="polite"></p>
+
+        <p class="auth-switch">Já tem conta? <button type="button" class="link-btn" id="goLogin">Entrar</button></p>
+      </form>
+
+    </div>
+  </main>
+</div>
+
+<script src="js/auth.js"></script>
+</body>
+</html>
