@@ -88,6 +88,40 @@ function setMsg(el, text, isError){
   el.classList.toggle('is-error', !!isError);
 }
 
+const TYPE_HINTS = {
+  cidadao: 'Reporte problemas e avalie a gestão do prefeito.',
+  prefeitura: 'Responda oficialmente aos relatos da população em nome da prefeitura.',
+  prefeito: 'Seu perfil público aparece na página "Avalie o prefeito", com nome e partido.'
+};
+
+function setupAccountType(){
+  const group = document.getElementById('accountType');
+  const hiddenInput = document.getElementById('regTipo');
+  const partidoField = document.getElementById('partidoField');
+  const partidoInput = document.getElementById('regPartido');
+  const hint = document.getElementById('typeHint');
+  if(!group) return;
+
+  function paint(tipo){
+    group.querySelectorAll('.type-btn').forEach(btn => {
+      const active = btn.dataset.type === tipo;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-checked', String(active));
+    });
+    hiddenInput.value = tipo;
+    hint.textContent = TYPE_HINTS[tipo] || '';
+    const isPrefeito = tipo === 'prefeito';
+    partidoField.hidden = !isPrefeito;
+    partidoInput.required = isPrefeito;
+  }
+
+  group.querySelectorAll('.type-btn').forEach(btn => {
+    btn.addEventListener('click', () => paint(btn.dataset.type));
+  });
+
+  paint('cidadao');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // Tabs
   document.getElementById('tabLogin').addEventListener('click', showLogin);
@@ -95,7 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('goRegister').addEventListener('click', showRegister);
   document.getElementById('goLogin').addEventListener('click', showLogin);
 
+  setupAccountType();
+
   if(window.location.hash === '#criar-conta') showRegister();
+  const urlType = new URLSearchParams(window.location.search).get('tipo');
+  if(urlType){
+    const btn = document.querySelector(`.type-btn[data-type="${urlType}"]`);
+    if(btn) btn.click();
+  }
 
   // Esqueci a senha
   document.getElementById('forgotLink').addEventListener('click', showForgot);
@@ -132,18 +173,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!isValidCPF(cpf)){ setMsg(msg, 'Informe um CPF válido.', true); return; }
     if(!isValidPhone(telefone)){ setMsg(msg, 'Informe um telefone válido, com DDD.', true); return; }
 
-    // Demo: aceita qualquer combinação válida (não há backend real conectado)
-    const session = { nome: email.split('@')[0], email };
+    // Demo: aceita qualquer combinação válida (não há backend real conectado).
+    // Se o e-mail já tiver cadastro, herda o tipo de conta (cidadão/prefeitura/prefeito) dele.
+    const users = loadUsers();
+    const account = users.find(u => u.email === email);
+    const tipo = account ? account.tipo : 'cidadao';
+    const session = {
+      nome: account ? account.nome : email.split('@')[0],
+      email,
+      tipo,
+      partido: account ? account.partido : undefined
+    };
     localStorage.setItem(SESSION_KEY, JSON.stringify(session));
     setMsg(msg, 'Login realizado! Redirecionando...', false);
-    setTimeout(() => { window.location.href = 'index.html'; }, 700);
+    const dest = tipo === 'prefeito' ? 'prefeito.html' : 'index.html';
+    setTimeout(() => { window.location.href = dest; }, 700);
   });
 
   // ---------- Cadastro ----------
   document.getElementById('registerForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const msg = document.getElementById('registerMsg');
+    const tipo = document.getElementById('regTipo').value;
     const nome = document.getElementById('regNome').value.trim();
+    const partido = document.getElementById('regPartido').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     const senha = document.getElementById('regSenha').value;
     const senha2 = document.getElementById('regSenha2').value;
@@ -152,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const termos = document.getElementById('regTermos').checked;
 
     if(nome.length < 3){ setMsg(msg, 'Informe seu nome completo.', true); return; }
+    if(tipo === 'prefeito' && partido.length < 2){ setMsg(msg, 'Informe o partido — é obrigatório para contas de prefeito.', true); return; }
     if(!isValidEmail(email)){ setMsg(msg, 'Informe um e-mail válido.', true); return; }
     if(senha.length < 6){ setMsg(msg, 'A senha deve ter pelo menos 6 caracteres.', true); return; }
     if(senha !== senha2){ setMsg(msg, 'As senhas não coincidem.', true); return; }
@@ -164,13 +218,16 @@ document.addEventListener('DOMContentLoaded', () => {
       setMsg(msg, 'Já existe uma conta com esse e-mail.', true);
       return;
     }
-    users.push({ nome, email, cpf, telefone });
+    const novoUsuario = { nome, email, cpf, telefone, tipo, criadoEm: new Date().toISOString() };
+    if(tipo === 'prefeito') novoUsuario.partido = partido;
+    users.push(novoUsuario);
     saveUsers(users);
 
-    const session = { nome, email };
+    const session = { nome, email, tipo, partido: tipo === 'prefeito' ? partido : undefined };
     localStorage.setItem(SESSION_KEY, JSON.stringify(session));
     setMsg(msg, 'Conta criada com sucesso! Redirecionando...', false);
-    setTimeout(() => { window.location.href = 'index.html'; }, 700);
+    const dest = tipo === 'prefeito' ? 'prefeito.html' : 'index.html';
+    setTimeout(() => { window.location.href = dest; }, 700);
   });
 
   // ---------- Esqueci a senha ----------

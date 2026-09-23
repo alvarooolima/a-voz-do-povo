@@ -349,9 +349,6 @@ button{font-family:inherit;}
 .response-form-actions{display:flex; align-items:center; gap:14px;}
 .response-form-actions .btn{padding:8px 16px; font-size:.85rem;}
 
-.prefeitura-toggle{font-size:.85rem;}
-.prefeitura-toggle.is-active{background:var(--royal-light); color:var(--royal-dark); font-weight:700;}
-
 /* ============ PREFEITO ============ */
 .mayor-hero{padding-bottom:0;}
 .mayor-title{font-size:clamp(1.8rem, 3vw, 2.6rem); color:var(--royal-deep); max-width:20ch;}
@@ -439,6 +436,35 @@ button{font-family:inherit;}
 .rating-author{font-size:.85rem; font-weight:700; margin:0;}
 .rating-comment{font-size:.9rem; color:var(--ink); margin:0;}
 
+/* ============ HISTÓRICO ============ */
+.party-chart{display:flex; flex-direction:column; gap:22px;}
+.party-bar-row{display:flex; flex-direction:column; gap:7px;}
+.party-bar-label{display:flex; align-items:center; gap:8px; font-size:.9rem; font-weight:600; color:var(--ink);}
+.party-bar-track{background:var(--white); border-radius:999px; height:36px; overflow:hidden; border:1px solid var(--line);}
+.party-bar-fill{
+  height:100%; background:var(--line); border-radius:999px;
+  display:flex; align-items:center; justify-content:flex-end; padding:0 14px;
+  min-width:70px; box-sizing:border-box; transition:width .4s ease;
+}
+.party-bar-fill.is-current{background:var(--royal);}
+.party-bar-value{font-size:.82rem; font-weight:700; color:var(--ink); white-space:nowrap;}
+.party-bar-fill.is-current .party-bar-value{color:var(--white);}
+
+.timeline{display:flex; flex-direction:column; gap:20px; margin-top:32px;}
+.timeline-item{
+  display:grid; grid-template-columns:150px 1fr; gap:24px;
+  background:var(--white); border:1px solid var(--line); border-radius:var(--radius-l);
+  padding:26px; box-shadow:var(--shadow-card);
+}
+.timeline-item.is-current{border-color:var(--royal); box-shadow:0 0 0 2px var(--royal-light);}
+.timeline-period{display:flex; flex-direction:column; gap:4px;}
+.timeline-period strong{font-family:var(--font-display); font-size:1.1rem; color:var(--royal-deep); font-weight:800;}
+.timeline-period span{font-size:.8rem; color:var(--muted);}
+.timeline-top{display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap;}
+.timeline-top h3{margin:0; font-size:1.1rem;}
+.timeline-feitos{margin:0; padding-left:20px; display:flex; flex-direction:column; gap:6px;}
+.timeline-feitos li{font-size:.92rem; color:var(--ink);}
+
 /* ============ FOOTER ============ */
 .site-footer{background:var(--royal-deep); color:var(--white); padding:52px 0 20px;}
 .footer-inner{display:flex; justify-content:space-between; gap:30px; flex-wrap:wrap; padding-bottom:30px; border-bottom:1px solid rgba(255,255,255,.15);}
@@ -480,6 +506,14 @@ button{font-family:inherit;}
 }
 .auth-tab.is-active{background:var(--white); color:var(--royal); box-shadow:0 1px 3px rgba(16,20,58,.12);}
 
+.account-type{display:flex; gap:6px; background:var(--royal-tint); padding:5px; border-radius:999px;}
+.type-btn{
+  flex:1; border:0; background:transparent; padding:9px; border-radius:999px;
+  font-weight:700; font-size:.85rem; color:var(--muted); cursor:pointer; font-family:inherit;
+}
+.type-btn.is-active{background:var(--royal); color:var(--white);}
+.type-hint{font-size:.8rem; color:var(--muted); margin:6px 0 0;}
+
 .auth-form{display:flex; flex-direction:column; gap:16px;}
 .auth-form .field input{width:100%;}
 .field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
@@ -517,6 +551,7 @@ button{font-family:inherit;}
   .rating-list{grid-template-columns:1fr;}
   .perf-grid{grid-template-columns:repeat(3, 1fr);}
   .hero-tools{grid-template-columns:repeat(2, 1fr);}
+  .timeline-item{grid-template-columns:1fr;}
 }
 @media (max-width: 640px){
   .header-actions .btn-ghost{display:none;}

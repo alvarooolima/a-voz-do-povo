@@ -1,11 +1,22 @@
 // ---------- Configuração do prefeito ----------
-// Para usar uma foto real, troque `foto` por um caminho de imagem (ex.: 'assets/prefeito.jpg').
+// Perfil de demonstração, usado só até alguém se cadastrar como "Prefeito" (login.html).
+// Para usar uma foto real nesse perfil demo, troque `foto` por um caminho de imagem.
 const MAYOR = {
   nome: 'João Silva',
   partido: 'Partido Progressista Municipal (PPM)',
   mandato: 'Mandato 2025–2028',
   foto: null
 };
+
+function loadRegisteredUsers(){
+  try{ return JSON.parse(localStorage.getItem('avozdopovo_users') || '[]'); }catch(e){ return []; }
+}
+function getMayorAccount(){
+  const prefeitos = loadRegisteredUsers().filter(u => u.tipo === 'prefeito' && u.partido);
+  if(!prefeitos.length) return null;
+  prefeitos.sort((a, b) => new Date(b.criadoEm || 0) - new Date(a.criadoEm || 0));
+  return prefeitos[0];
+}
 
 const RATINGS_KEY = 'avozdopovo_prefeito_avaliacoes';
 const MY_RATING_KEY = 'avozdopovo_minha_avaliacao';
@@ -84,14 +95,19 @@ function renderMayorProfile(){
   const photoEl = document.getElementById('mayorPhoto');
   if(!nomeEl) return;
 
-  nomeEl.textContent = MAYOR.nome;
-  partidoEl.textContent = MAYOR.partido;
-  mandatoEl.textContent = MAYOR.mandato;
+  const account = getMayorAccount();
+  const nome = account ? account.nome : MAYOR.nome;
+  const partido = account ? account.partido : MAYOR.partido;
+  const mandato = account ? 'Em exercício' : MAYOR.mandato;
 
-  if(MAYOR.foto){
-    photoEl.innerHTML = `<img src="${MAYOR.foto}" alt="Foto de ${escapeHtmlLocal(MAYOR.nome)}">`;
+  nomeEl.textContent = nome;
+  partidoEl.textContent = partido;
+  mandatoEl.textContent = mandato;
+
+  if(MAYOR.foto && !account){
+    photoEl.innerHTML = `<img src="${MAYOR.foto}" alt="Foto de ${escapeHtmlLocal(nome)}">`;
   }else{
-    photoEl.textContent = getInitials(MAYOR.nome);
+    photoEl.textContent = getInitials(nome);
   }
 
   renderAverageScore();

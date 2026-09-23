@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Histórico de Partidos — A Voz do Povo</title>
+<meta name="description" content="Veja quais partidos já governaram a cidade, quantos anos cada um ficou no poder e o que fizeram durante esse período.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%231746D6%22/><text x=%2250%22 y=%2266%22 font-size=%2258%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22>V</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-name">A Voz do Povo</span>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-trigger">Para você <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="index.html#reportar">Reportar problema</a>
+          <a href="index.html#categorias">Categorias</a>
+          <a href="index.html#ocorrencias">Ocorrências</a>
+          <a href="prefeito.html">Avalie o prefeito</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-trigger">Para a prefeitura <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="index.html#ocorrencias" id="navResponderLink" hidden>Responder relatos</a>
+          <a href="login.html?tipo=prefeitura#criar-conta" id="navEntrarPrefeituraLink">Sou da prefeitura ou prefeito</a>
+          <a href="historico.html">Histórico de partidos</a>
+        </div>
+      </div>
+    </nav>
+    <div class="header-actions">
+      <span class="user-chip" id="userChip" hidden></span>
+      <a class="btn btn-ghost" id="loginLink" href="login.html">Entrar</a>
+      <a class="btn btn-primary" href="login.html#criar-conta">Criar conta</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- CABEÇALHO -->
+  <section class="section mayor-hero">
+    <div class="wrap">
+      <p class="eyebrow">Prestação de contas</p>
+      <h1 class="mayor-title">Quem já governou a cidade?</h1>
+      <p class="muted mayor-lede">Um retrato histórico dos partidos que passaram pela prefeitura: quantos anos cada um ficou no poder e o que fizeram durante o mandato. Dados públicos, para a população acompanhar.</p>
+    </div>
+  </section>
+
+  <!-- GRÁFICO -->
+  <section class="section" id="grafico-partidos">
+    <div class="wrap">
+      <p class="eyebrow">Anos no poder</p>
+      <h2>Tempo de cada partido à frente da prefeitura</h2>
+      <div class="balloon-panel">
+        <div class="party-chart" id="partyChart"><!-- injetado via JS --></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LINHA DO TEMPO -->
+  <section class="section" id="linha-do-tempo">
+    <div class="wrap">
+      <p class="eyebrow">Linha do tempo</p>
+      <h2>O que cada gestão fez pela cidade</h2>
+      <div class="timeline" id="timelineList"><!-- injetado via JS --></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <span class="brand-name light">A Voz do Povo</span>
+      <p class="muted-light">Um canal aberto entre quem mora na cidade e quem cuida dela.</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html#reportar">Reportar problema</a>
+      <a href="index.html#ocorrencias">Ocorrências</a>
+      <a href="prefeito.html">Avalie o prefeito</a>
+      <a href="historico.html">Histórico de partidos</a>
+      <a href="login.html">Entrar</a>
+    </div>
+  </div>
+  <p class="footer-copy">© <span id="year"></span> A Voz do Povo. Protótipo de demonstração.</p>
+</footer>
+<script src="main.js"></script>
+<script src="historico.js"></script>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+</body>
+</html>

@@ -6,12 +6,14 @@ Site cidadão para relatar problemas urbanos (buracos, poda de árvores, ilumina
 ```
 a-voz-do-povo/
 ├── index.html      → página inicial (hero, categorias, formulário de relato, feed)
-├── login.html      → login / cadastro / esqueci a senha (só o formulário, sem menu)
+├── login.html      → login / cadastro (com tipo de conta) / esqueci a senha
 ├── prefeito.html   → avaliação do prefeito (nome, foto, partido e nota em estrelas)
+├── historico.html  → histórico de partidos no poder, com gráfico e linha do tempo
 ├── styles.css      → design system (azul royal + branco)
-├── main.js         → lógica da página inicial (relatos e feed)
-├── auth.js         → lógica de autenticação
-├── avaliar.js       → lógica da avaliação do prefeito
+├── main.js         → lógica da página inicial (relatos, feed e sessão/papéis)
+├── auth.js         → lógica de autenticação e cadastro (tipo de conta)
+├── avaliar.js      → lógica da avaliação do prefeito
+├── historico.js    → dados e renderização do histórico de partidos
 ├── assets/         → logotipo extraído (versões azul e branca, cheia e ícone)
 └── vercel.json
 ```
@@ -45,8 +47,16 @@ Qualquer visitante pode dar uma nota de 1 a 5 estrelas com comentário opcional;
 ## Hero com busca e ferramentas (inspirado no Reclame Aqui)
 A seção inicial ganhou a mesma estrutura da home do Reclame Aqui — busca em destaque + linha de "ferramentas para você" — adaptada à nossa identidade: campo de busca que filtra as ocorrências por rua, bairro, categoria ou palavra-chave (rola até o feed e mostra um indicador "Resultados para..." com opção de limpar), e 4 atalhos (Reportar problema, Ver ocorrências, Avalie o prefeito, Painel da prefeitura).
 
-## Resposta oficial (modo prefeitura)
-No menu "Para a prefeitura" do cabeçalho, o item **"Painel da prefeitura"** liga um modo de demonstração (salvo em `localStorage`, sem autenticação real) que revela, em cada relato do feed, um botão "Responder oficialmente". A resposta digitada aparece publicamente no card (como a resposta de uma empresa no Reclame Aqui) e também atualiza o status do relato. O feed ganhou os filtros "Respondidos" e "Não respondidos" para acompanhar isso. Numa versão real, esse painel seria restrito a uma conta oficial da prefeitura autenticada no backend.
+## Três perfis de acesso
+No cadastro (`login.html`), a pessoa escolhe um **tipo de conta**:
+- **Cidadão** — reporta problemas e avalia a gestão do prefeito (padrão).
+- **Prefeitura** — além de tudo que o cidadão faz, pode **responder oficialmente** aos relatos no feed (o botão "Responder oficialmente" só aparece pra quem estiver logado com esse papel, ou o de prefeito).
+- **Prefeito** — exige informar o **partido** (obrigatório). O nome e o partido dessa conta passam a ser exibidos automaticamente em `prefeito.html` e em `historico.html`, substituindo o perfil de demonstração. Também pode responder relatos, como a prefeitura.
+
+O papel (`tipo`) fica salvo na sessão (`localStorage`) junto com o cadastro do usuário — é um protótipo local, então login não verifica senha de verdade (ver seção abaixo), mas os menus, botões e permissões (responder relatos, aparecer como prefeito) já reagem de verdade ao tipo de conta logada. O menu "Para a prefeitura" no cabeçalho mostra "Sou da prefeitura ou prefeito" (leva ao cadastro) para quem não tem esse papel, e "Responder relatos" para quem tem.
+
+## Histórico de partidos
+A página `historico.html` mostra um gráfico de barras com quantos anos cada partido ficou no poder e uma linha do tempo com o que cada gestão fez. O último item é dinâmico: puxa o partido de quem estiver cadastrado como "Prefeito"; as gestões passadas são dados de demonstração editáveis em `HISTORICO_PASSADO`, no topo de `historico.js`.
 
 ## Identidade visual
 - **Tipografia**: Inter (sans-serif) em todo o site — sem serifa, pensada para leitura fácil em qualquer idade.
@@ -57,5 +67,6 @@ No menu "Para a prefeitura" do cabeçalho, o item **"Painel da prefeitura"** lig
 ## Personalização rápida
 - Cores: edite as variáveis no topo de `styles.css` (`--royal`, `--royal-dark`, etc.).
 - Categorias de problema: edite o array `CATEGORIES` em `main.js`.
-- Dados do prefeito: edite o objeto `MAYOR` em `avaliar.js`.
+- Dados do prefeito de demonstração: edite o objeto `MAYOR` em `avaliar.js`.
+- Histórico de gestões passadas: edite o array `HISTORICO_PASSADO` em `historico.js`.
 - Textos: todo o conteúdo está direto no HTML, em português.

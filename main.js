@@ -2,7 +2,6 @@
 const STORAGE_KEY = 'avozdopovo_reports';
 const SUPPORTED_KEY = 'avozdopovo_supported';
 const SESSION_KEY = 'avozdopovo_session';
-const MODE_KEY = 'avozdopovo_modo_prefeitura';
 
 const CATEGORIES = [
   {
@@ -117,11 +116,12 @@ function formatDate(iso){
   if(isNaN(d)) return '';
   return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });
 }
-function isPrefeituraMode(){
-  try{ return localStorage.getItem(MODE_KEY) === '1'; }catch(e){ return false; }
+function getSession(){
+  try{ return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); }catch(e){ return null; }
 }
-function setPrefeituraMode(on){
-  try{ localStorage.setItem(MODE_KEY, on ? '1' : '0'); }catch(e){}
+function canManageAsPrefeitura(){
+  const session = getSession();
+  return !!session && (session.tipo === 'prefeitura' || session.tipo === 'prefeito');
 }
 function saveResponse(id, texto, status){
   const reports = loadReports();
@@ -249,7 +249,7 @@ function renderFeed(){
           </div>
           <p>${escapeHtml(r.resposta.texto)}</p>
         </div>` : ''}
-        ${isPrefeituraMode() ? `
+        ${canManageAsPrefeitura() ? `
         <div class="prefeitura-panel">
           <button type="button" class="link-btn respond-btn" data-id="${r.id}">${r.resposta ? 'Editar resposta oficial' : 'Responder oficialmente'}</button>
           <form class="response-form" data-id="${r.id}" hidden>
@@ -408,25 +408,36 @@ function setupReportForm(){
 }
 
 // ---------- Sessão (login) ----------
+const ROLE_LABELS = { prefeitura: 'Prefeitura', prefeito: 'Prefeito' };
+
 function setupSession(){
   const chip = document.getElementById('userChip');
   const loginLink = document.getElementById('loginLink');
-  try{
-    const session = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
-    if(session && session.nome && chip){
-      chip.textContent = 'Olá, ' + session.nome.split(' ')[0];
-      chip.hidden = false;
-      if(loginLink){
-        loginLink.textContent = 'Sair';
-        loginLink.href = '#';
-        loginLink.addEventListener('click', (e) => {
-          e.preventDefault();
-          localStorage.removeItem(SESSION_KEY);
-          location.reload();
-        });
-      }
+  const criarContaLink = document.querySelector('.header-actions .btn-primary');
+  const navResponderLink = document.getElementById('navResponderLink');
+  const navEntrarPrefeituraLink = document.getElementById('navEntrarPrefeituraLink');
+  const session = getSession();
+
+  if(session && session.nome && chip){
+    const papel = ROLE_LABELS[session.tipo];
+    chip.textContent = 'Olá, ' + session.nome.split(' ')[0] + (papel ? ' (' + papel + ')' : '');
+    chip.hidden = false;
+    if(criarContaLink) criarContaLink.hidden = true;
+    if(loginLink){
+      loginLink.textContent = 'Sair';
+      loginLink.href = '#';
+      loginLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem(SESSION_KEY);
+        location.reload();
+      });
     }
-  }catch(e){}
+  }
+
+  if(canManageAsPrefeitura()){
+    if(navResponderLink) navResponderLink.hidden = false;
+    if(navEntrarPrefeituraLink) navEntrarPrefeituraLink.hidden = true;
+  }
 }
 
 // ---------- Busca do hero ----------
@@ -452,39 +463,14 @@ function setupHeroSearch(){
 
   const heroPrefeituraTool = document.getElementById('heroPrefeituraTool');
   if(heroPrefeituraTool){
-    heroPrefeituraTool.addEventListener('click', () => {
-      if(!isPrefeituraMode()){
-        setPrefeituraMode(true);
-        paintPrefeituraToggle();
-        renderFeed();
-        showToast('Modo prefeitura ativado (demonstração)');
+    heroPrefeituraTool.addEventListener('click', (e) => {
+      if(canManageAsPrefeitura()){
+        e.preventDefault();
+        document.getElementById('ocorrencias').scrollIntoView({ behavior: 'smooth' });
       }
-      document.getElementById('ocorrencias').scrollIntoView({ behavior: 'smooth' });
+      // Se não estiver logado com essa permissão, o link segue normalmente para o login.
     });
   }
-}
-
-// ---------- Modo prefeitura ----------
-function paintPrefeituraToggle(){
-  const btn = document.getElementById('prefeituraToggle');
-  if(!btn) return;
-  const on = isPrefeituraMode();
-  btn.classList.toggle('is-active', on);
-  btn.setAttribute('aria-pressed', String(on));
-  btn.textContent = on ? '🏛️ Painel da prefeitura: ativo' : '🏛️ Painel da prefeitura';
-}
-
-function setupPrefeituraToggle(){
-  const btn = document.getElementById('prefeituraToggle');
-  if(!btn) return;
-  paintPrefeituraToggle();
-
-  btn.addEventListener('click', () => {
-    setPrefeituraMode(!isPrefeituraMode());
-    paintPrefeituraToggle();
-    if(typeof renderFeed === 'function') renderFeed();
-    showToast(isPrefeituraMode() ? 'Modo prefeitura ativado (demonstração)' : 'Modo prefeitura desativado');
-  });
 }
 
 // ---------- Menu dropdown do header ----------
@@ -537,7 +523,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupSession();
   setupNavToggle();
   setupNavDropdowns();
-  setupPrefeituraToggle();
   setupHeroSearch();
   renderFeed();
 });

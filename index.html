@@ -32,7 +32,9 @@
       <div class="nav-dropdown">
         <button type="button" class="nav-dropdown-trigger">Para a prefeitura <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-dropdown-menu">
-          <button type="button" id="prefeituraToggle">Painel da prefeitura</button>
+          <a href="#ocorrencias" id="navResponderLink" hidden>Responder relatos</a>
+          <a href="login.html?tipo=prefeitura#criar-conta" id="navEntrarPrefeituraLink">Sou da prefeitura ou prefeito</a>
+          <a href="historico.html">Histórico de partidos</a>
         </div>
       </div>
     </nav>
@@ -76,10 +78,10 @@
             <span class="hero-tool-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="m12 3 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8L12 3Z" stroke="#1746D6" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
             Avalie o prefeito
           </a>
-          <button type="button" class="hero-tool" id="heroPrefeituraTool">
+          <a href="login.html?tipo=prefeitura#criar-conta" class="hero-tool" id="heroPrefeituraTool">
             <span class="hero-tool-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 21h16M5 21V10l7-5 7 5v11M9 21v-6h6v6" stroke="#1746D6" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
             Painel da prefeitura
-          </button>
+          </a>
         </div>
       </div>
       <div class="hero-art" aria-hidden="true">
