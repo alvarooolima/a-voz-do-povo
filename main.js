@@ -155,6 +155,7 @@ function renderCategories(){
 
 // ---------- Feed ----------
 let currentFilter = 'todos';
+let searchQuery = '';
 
 function renderStats(reports){
   const total = reports.length;
@@ -176,7 +177,7 @@ function renderFeed(){
   const empty = document.getElementById('feedEmpty');
   if(!grid) return;
 
-  const filtered = currentFilter === 'todos'
+  let filtered = currentFilter === 'todos'
     ? reports
     : currentFilter === 'Respondidos'
       ? reports.filter(r => !!r.resposta)
@@ -184,9 +185,31 @@ function renderFeed(){
         ? reports.filter(r => !r.resposta)
         : reports.filter(r => r.status === currentFilter);
 
+  const searchIndicator = document.getElementById('searchIndicator');
+  if(searchQuery){
+    const q = searchQuery.toLowerCase();
+    filtered = filtered.filter(r =>
+      r.titulo.toLowerCase().includes(q) ||
+      r.endereco.toLowerCase().includes(q) ||
+      r.categoria.toLowerCase().includes(q) ||
+      r.comentario.toLowerCase().includes(q)
+    );
+    if(searchIndicator){
+      document.getElementById('searchIndicatorTerm').textContent = searchQuery;
+      searchIndicator.hidden = false;
+    }
+  }else if(searchIndicator){
+    searchIndicator.hidden = true;
+  }
+
   if(filtered.length === 0){
     grid.innerHTML = '';
-    if(empty) empty.hidden = false;
+    if(empty){
+      empty.hidden = false;
+      empty.textContent = searchQuery
+        ? `Nenhuma ocorrência encontrada para "${searchQuery}".`
+        : 'Nenhuma ocorrência encontrada para esse filtro.';
+    }
     return;
   }
   if(empty) empty.hidden = true;
@@ -406,22 +429,59 @@ function setupSession(){
   }catch(e){}
 }
 
+// ---------- Busca do hero ----------
+function setupHeroSearch(){
+  const form = document.getElementById('heroSearchForm');
+  const clearBtn = document.getElementById('searchIndicatorClear');
+  if(!form) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    searchQuery = document.getElementById('heroSearchInput').value.trim();
+    renderFeed();
+    document.getElementById('ocorrencias').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  if(clearBtn){
+    clearBtn.addEventListener('click', () => {
+      searchQuery = '';
+      document.getElementById('heroSearchInput').value = '';
+      renderFeed();
+    });
+  }
+
+  const heroPrefeituraTool = document.getElementById('heroPrefeituraTool');
+  if(heroPrefeituraTool){
+    heroPrefeituraTool.addEventListener('click', () => {
+      if(!isPrefeituraMode()){
+        setPrefeituraMode(true);
+        paintPrefeituraToggle();
+        renderFeed();
+        showToast('Modo prefeitura ativado (demonstração)');
+      }
+      document.getElementById('ocorrencias').scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+}
+
 // ---------- Modo prefeitura ----------
+function paintPrefeituraToggle(){
+  const btn = document.getElementById('prefeituraToggle');
+  if(!btn) return;
+  const on = isPrefeituraMode();
+  btn.classList.toggle('is-active', on);
+  btn.setAttribute('aria-pressed', String(on));
+  btn.textContent = on ? '🏛️ Painel da prefeitura: ativo' : '🏛️ Painel da prefeitura';
+}
+
 function setupPrefeituraToggle(){
   const btn = document.getElementById('prefeituraToggle');
   if(!btn) return;
-
-  function paint(){
-    const on = isPrefeituraMode();
-    btn.classList.toggle('is-active', on);
-    btn.setAttribute('aria-pressed', String(on));
-    btn.textContent = on ? '🏛️ Painel da prefeitura: ativo' : '🏛️ Painel da prefeitura';
-  }
-  paint();
+  paintPrefeituraToggle();
 
   btn.addEventListener('click', () => {
     setPrefeituraMode(!isPrefeituraMode());
-    paint();
+    paintPrefeituraToggle();
     if(typeof renderFeed === 'function') renderFeed();
     showToast(isPrefeituraMode() ? 'Modo prefeitura ativado (demonstração)' : 'Modo prefeitura desativado');
   });
@@ -457,5 +517,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupSession();
   setupNavToggle();
   setupPrefeituraToggle();
+  setupHeroSearch();
   renderFeed();
 });

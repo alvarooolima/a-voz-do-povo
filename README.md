@@ -42,6 +42,9 @@ A página `prefeito.html` mostra o perfil do prefeito (nome, foto, partido e man
 
 Qualquer visitante pode dar uma nota de 1 a 5 estrelas com comentário opcional; a média, o selo e a lista de avaliações ficam em `localStorage`. Para editar os dados do prefeito, altere o objeto `MAYOR` no topo de `avaliar.js`; para usar uma foto real, defina `foto: 'assets/sua-foto.jpg'`.
 
+## Hero com busca e ferramentas (inspirado no Reclame Aqui)
+A seção inicial ganhou a mesma estrutura da home do Reclame Aqui — busca em destaque + linha de "ferramentas para você" — adaptada à nossa identidade: campo de busca que filtra as ocorrências por rua, bairro, categoria ou palavra-chave (rola até o feed e mostra um indicador "Resultados para..." com opção de limpar), e 4 atalhos (Reportar problema, Ver ocorrências, Avalie o prefeito, Painel da prefeitura).
+
 ## Resposta oficial (modo prefeitura)
 No cabeçalho, o botão **"🏛️ Painel da prefeitura"** liga um modo de demonstração (salvo em `localStorage`, sem autenticação real) que revela, em cada relato do feed, um botão "Responder oficialmente". A resposta digitada aparece publicamente no card (como a resposta de uma empresa no Reclame Aqui) e também atualiza o status do relato. O feed ganhou os filtros "Respondidos" e "Não respondidos" para acompanhar isso. Numa versão real, esse painel seria restrito a uma conta oficial da prefeitura autenticada no backend.
 
