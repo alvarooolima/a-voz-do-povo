@@ -83,9 +83,11 @@ button{font-family:inherit;}
   height:72px;
 }
 .brand{display:flex; align-items:center; gap:10px; text-decoration:none;}
+.header-search-compact{display:none;}
 .brand-name{font-family:var(--font-display); font-weight:800; font-size:1.15rem; color:var(--ink); letter-spacing:-.01em;}
 .brand-name.light{color:var(--white);}
 
+.nav-panel{display:contents;}
 .main-nav{display:flex; align-items:center; gap:4px; margin-left:8px;}
 .nav-dropdown{position:relative;}
 .nav-dropdown-trigger{
@@ -117,7 +119,10 @@ button{font-family:inherit;}
   background:var(--royal-light); padding:7px 14px; border-radius:999px;
 }
 .nav-toggle{display:none; flex-direction:column; gap:5px; background:none; border:0; cursor:pointer; padding:6px;}
-.nav-toggle span{width:22px; height:2px; background:var(--ink); display:block;}
+.nav-toggle span{width:22px; height:2px; background:var(--ink); display:block; transition:transform .15s ease, opacity .15s ease;}
+.nav-toggle.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-toggle.is-open span:nth-child(2){opacity:0;}
+.nav-toggle.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
 /* ============ HERO ============ */
 .hero{background:var(--white);}
@@ -537,6 +542,8 @@ button{font-family:inherit;}
 .form-msg.is-error{color:#C0392B;}
 
 /* ============ RESPONSIVE ============ */
+/* Mobile e tablet (<=920px) seguem a mesma estrutura de cabeçalho do Reclame Aqui:
+   só marca + hambúrguer visíveis; nav e ações do header ficam num painel único. */
 @media (max-width: 920px){
   .hero-inner{grid-template-columns:1fr;}
   .hero-art{order:-1; max-width:340px; margin:0 auto;}
@@ -546,27 +553,48 @@ button{font-family:inherit;}
   .steps{grid-template-columns:1fr;}
   .feed-grid{grid-template-columns:repeat(2,1fr);}
   .auth-card{padding:28px 22px;}
-  .main-nav{display:none;}
   .mayor-wrap{grid-template-columns:1fr;}
   .rating-list{grid-template-columns:1fr;}
   .perf-grid{grid-template-columns:repeat(3, 1fr);}
   .hero-tools{grid-template-columns:repeat(2, 1fr);}
   .timeline-item{grid-template-columns:1fr;}
-}
-@media (max-width: 640px){
-  .header-actions .btn-ghost{display:none;}
-  .cat-grid{grid-template-columns:1fr;}
-  .feed-grid{grid-template-columns:1fr;}
-  .field-row{grid-template-columns:1fr;}
+
   .nav-toggle{display:flex;}
-  .perf-grid{grid-template-columns:repeat(2, 1fr);}
-  .main-nav{flex-direction:column; align-items:stretch; gap:2px;}
-  .nav-dropdown-trigger{width:100%; justify-content:space-between;}
-  .nav-dropdown-menu{
+  .header-search-compact.is-visible{
+    display:flex; align-items:center; gap:8px; flex:1; min-width:0;
+    background:var(--royal-tint); border:1px solid var(--line); border-radius:999px;
+    padding:9px 14px; margin:0 12px;
+  }
+  .header-search-compact input{
+    flex:1; min-width:0; border:0; outline:0; background:transparent;
+    font-family:inherit; font-size:.9rem; color:var(--ink);
+  }
+  .header-search-compact input::placeholder{color:var(--muted);}
+  .nav-panel{display:none;}
+  .nav-panel.is-open{
+    display:flex; flex-direction:column;
+    position:absolute; top:72px; left:0; right:0;
+    background:var(--white); padding:10px 24px 20px;
+    border-bottom:1px solid var(--line); box-shadow:var(--shadow-card);
+    max-height:calc(100vh - 72px); overflow-y:auto; z-index:55;
+  }
+  .nav-panel.is-open .main-nav{flex-direction:column; align-items:stretch; gap:2px; margin-left:0;}
+  .nav-panel.is-open .nav-dropdown-trigger{width:100%; justify-content:space-between;}
+  .nav-panel.is-open .nav-dropdown-menu{
     position:static; display:none; box-shadow:none; border:0;
     padding:0 0 0 14px; margin-top:2px; min-width:0;
   }
-  .nav-dropdown.is-open .nav-dropdown-menu{display:flex;}
+  .nav-panel.is-open .nav-dropdown.is-open .nav-dropdown-menu{display:flex;}
+  .nav-panel.is-open .header-actions{
+    flex-direction:column; align-items:stretch; gap:10px; margin:14px 0 0;
+    padding-top:14px; border-top:1px solid var(--line);
+  }
+}
+@media (max-width: 640px){
+  .cat-grid{grid-template-columns:1fr;}
+  .feed-grid{grid-template-columns:1fr;}
+  .field-row{grid-template-columns:1fr;}
+  .perf-grid{grid-template-columns:repeat(2, 1fr);}
   .hero-search{flex-wrap:wrap; border-radius:var(--radius-m); padding:10px 14px;}
   .hero-search input{width:100%; order:1;}
   .hero-search svg{order:0;}

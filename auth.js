@@ -10,6 +10,15 @@ function maskCPF(value){
     .replace(/(\d{3})(\d)/, '$1.$2')
     .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
 }
+function maskCNPJ(value){
+  return value
+    .replace(/\D/g, '')
+    .slice(0, 14)
+    .replace(/(\d{2})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1/$2')
+    .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+}
 function maskPhone(value){
   const digits = value.replace(/\D/g, '').slice(0, 11);
   if(digits.length <= 10){
@@ -35,6 +44,22 @@ function isValidCPF(cpfRaw){
   if(rev === 10 || rev === 11) rev = 0;
   return rev === parseInt(cpf[10]);
 }
+function isValidCNPJ(cnpjRaw){
+  const cnpj = cnpjRaw.replace(/\D/g, '');
+  if(cnpj.length !== 14 || /^(\d)\1{13}$/.test(cnpj)) return false;
+  const calcDigit = (base) => {
+    let pos = base.length - 7;
+    let sum = 0;
+    for(let i = 0; i < base.length; i++){
+      sum += parseInt(base[i]) * pos--;
+      if(pos < 2) pos = 9;
+    }
+    const rest = sum % 11;
+    return rest < 2 ? 0 : 11 - rest;
+  };
+  if(calcDigit(cnpj.slice(0, 12)) !== parseInt(cnpj[12])) return false;
+  return calcDigit(cnpj.slice(0, 13)) === parseInt(cnpj[13]);
+}
 function isValidPhone(phoneRaw){
   const digits = phoneRaw.replace(/\D/g, '');
   return digits.length === 10 || digits.length === 11;
@@ -48,6 +73,18 @@ function attachMask(input, maskFn){
   input.addEventListener('input', () => {
     input.value = maskFn(input.value);
   });
+}
+// Campo CPF/CNPJ do login: como o tipo de conta só é conhecido após localizar
+// o cadastro, o campo aceita os dois formatos e detecta qual é pela quantidade de dígitos.
+function maskDoc(value){
+  const digits = value.replace(/\D/g, '');
+  return digits.length > 11 ? maskCNPJ(value) : maskCPF(value);
+}
+function isValidDoc(value){
+  const digits = value.replace(/\D/g, '');
+  if(digits.length === 11) return isValidCPF(value);
+  if(digits.length === 14) return isValidCNPJ(value);
+  return false;
 }
 
 // ---------- Usuários (demo local) ----------
@@ -100,6 +137,8 @@ function setupAccountType(){
   const partidoField = document.getElementById('partidoField');
   const partidoInput = document.getElementById('regPartido');
   const hint = document.getElementById('typeHint');
+  const docLabel = document.getElementById('regCpfLabel');
+  const docInput = document.getElementById('regCpf');
   if(!group) return;
 
   function paint(tipo){
@@ -113,6 +152,12 @@ function setupAccountType(){
     const isPrefeito = tipo === 'prefeito';
     partidoField.hidden = !isPrefeito;
     partidoInput.required = isPrefeito;
+
+    const needsCNPJ = tipo === 'prefeitura' || tipo === 'prefeito';
+    docLabel.textContent = needsCNPJ ? 'CNPJ' : 'CPF';
+    docInput.placeholder = needsCNPJ ? '00.000.000/0000-00' : '000.000.000-00';
+    docInput.maxLength = needsCNPJ ? 18 : 14;
+    docInput.value = '';
   }
 
   group.querySelectorAll('.type-btn').forEach(btn => {
@@ -143,9 +188,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('forgotBack').addEventListener('click', showLogin);
 
   // Máscaras
-  attachMask(document.getElementById('loginCpf'), maskCPF);
+  attachMask(document.getElementById('loginCpf'), maskDoc);
   attachMask(document.getElementById('loginTelefone'), maskPhone);
-  attachMask(document.getElementById('regCpf'), maskCPF);
+  attachMask(document.getElementById('regCpf'), (value) => {
+    const tipo = document.getElementById('regTipo').value;
+    return tipo === 'cidadao' ? maskCPF(value) : maskCNPJ(value);
+  });
   attachMask(document.getElementById('regTelefone'), maskPhone);
 
   // Mostrar/ocultar senha
@@ -170,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(!isValidEmail(email)){ setMsg(msg, 'Informe um e-mail válido.', true); return; }
     if(senha.length < 6){ setMsg(msg, 'A senha deve ter pelo menos 6 caracteres.', true); return; }
-    if(!isValidCPF(cpf)){ setMsg(msg, 'Informe um CPF válido.', true); return; }
+    if(!isValidDoc(cpf)){ setMsg(msg, 'Informe um CPF ou CNPJ válido.', true); return; }
     if(!isValidPhone(telefone)){ setMsg(msg, 'Informe um telefone válido, com DDD.', true); return; }
 
     // Demo: aceita qualquer combinação válida (não há backend real conectado).
@@ -209,7 +257,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!isValidEmail(email)){ setMsg(msg, 'Informe um e-mail válido.', true); return; }
     if(senha.length < 6){ setMsg(msg, 'A senha deve ter pelo menos 6 caracteres.', true); return; }
     if(senha !== senha2){ setMsg(msg, 'As senhas não coincidem.', true); return; }
-    if(!isValidCPF(cpf)){ setMsg(msg, 'Informe um CPF válido.', true); return; }
+    const precisaCNPJ = tipo === 'prefeitura' || tipo === 'prefeito';
+    if(precisaCNPJ ? !isValidCNPJ(cpf) : !isValidCPF(cpf)){
+      setMsg(msg, precisaCNPJ ? 'Informe um CNPJ válido.' : 'Informe um CPF válido.', true);
+      return;
+    }
     if(!isValidPhone(telefone)){ setMsg(msg, 'Informe um telefone válido, com DDD.', true); return; }
     if(!termos){ setMsg(msg, 'É preciso aceitar os termos de uso.', true); return; }
 

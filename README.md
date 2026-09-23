@@ -50,8 +50,10 @@ A seção inicial ganhou a mesma estrutura da home do Reclame Aqui — busca em 
 ## Três perfis de acesso
 No cadastro (`login.html`), a pessoa escolhe um **tipo de conta**:
 - **Cidadão** — reporta problemas e avalia a gestão do prefeito (padrão).
-- **Prefeitura** — além de tudo que o cidadão faz, pode **responder oficialmente** aos relatos no feed (o botão "Responder oficialmente" só aparece pra quem estiver logado com esse papel, ou o de prefeito).
-- **Prefeito** — exige informar o **partido** (obrigatório). O nome e o partido dessa conta passam a ser exibidos automaticamente em `prefeito.html` e em `historico.html`, substituindo o perfil de demonstração. Também pode responder relatos, como a prefeitura.
+- **Prefeitura** — além de tudo que o cidadão faz, pode **responder oficialmente** aos relatos no feed (o botão "Responder oficialmente" só aparece pra quem estiver logado com esse papel, ou o de prefeito). Pede **CNPJ** em vez de CPF no cadastro.
+- **Prefeito** — exige informar o **partido** (obrigatório) e também pede **CNPJ**. O nome e o partido dessa conta passam a ser exibidos automaticamente em `prefeito.html` e em `historico.html`, substituindo o perfil de demonstração. Também pode responder relatos, como a prefeitura.
+
+O campo de documento muda de "CPF" para "CNPJ" (com máscara e dígito verificador próprios) conforme o tipo de conta escolhido no cadastro. No login, como o tipo só é conhecido depois de localizar a conta pelo e-mail, o campo aceita CPF ou CNPJ e detecta qual é pela quantidade de dígitos.
 
 O papel (`tipo`) fica salvo na sessão (`localStorage`) junto com o cadastro do usuário — é um protótipo local, então login não verifica senha de verdade (ver seção abaixo), mas os menus, botões e permissões (responder relatos, aparecer como prefeito) já reagem de verdade ao tipo de conta logada. O menu "Para a prefeitura" no cabeçalho mostra "Sou da prefeitura ou prefeito" (leva ao cadastro) para quem não tem esse papel, e "Responder relatos" para quem tem.
 
@@ -63,6 +65,7 @@ A página `historico.html` mostra um gráfico de barras com quantos anos cada pa
 - **Logotipo**: apenas o texto "A Voz do Povo" (sem ícone/símbolo) no cabeçalho e nas páginas de login/cadastro. Os arquivos de ilustração extraídos ficam em `assets/` (`logo-*.png`, `mark-*.png`) caso queira reaproveitá-los em outro lugar.
 - **Fundo**: todas as páginas são brancas; onde há "balões" (badges, chips, cartões de estatística — como no Reclame Aqui), eles ficam dentro de um painel com fundo azul royal bem claro (classe `.balloon-panel`).
 - **Cabeçalho**: minimalista, no formato do Reclame Aqui — wordmark + dois menus dropdown ("Para você" / "Para a prefeitura") + botões "Entrar" e "Criar conta".
+- **Mobile e tablet (≤920px)**: mesma lógica do app do Reclame Aqui — o cabeçalho mostra só a marca e o menu hambúrguer; os dois dropdowns e os botões Entrar/Criar conta ficam dentro do painel do hambúrguer. Na página inicial, ao rolar para além da busca do hero, a marca dá lugar a um campo de busca compacto fixo no topo (volta ao normal ao rolar de volta). Em telas maiores que 920px nada disso muda — o cabeçalho continua como no desktop.
 
 ## Personalização rápida
 - Cores: edite as variáveis no topo de `styles.css` (`--royal`, `--royal-dark`, etc.).

@@ -473,6 +473,48 @@ function setupHeroSearch(){
   }
 }
 
+// ---------- Busca compacta no cabeçalho (mobile/tablet, ao rolar) ----------
+// Em telas <=920px, quando a busca do hero sai de vista, o cabeçalho troca a
+// marca por um campo de busca compacto — igual ao comportamento do Reclame Aqui.
+// Em telas maiores nada muda: a regra que exibe esse campo só existe dentro do
+// media query, então a classe .is-visible não tem efeito no desktop.
+function setupHeaderScrollSearch(){
+  const heroSearchForm = document.getElementById('heroSearchForm');
+  const headerBrand = document.getElementById('headerBrand');
+  const compactSearch = document.getElementById('headerSearchCompact');
+  const compactInput = document.getElementById('headerSearchCompactInput');
+  if(!heroSearchForm || !headerBrand || !compactSearch) return;
+
+  const mq = window.matchMedia('(max-width: 920px)');
+  const HEADER_HEIGHT = 72;
+  let ticking = false;
+
+  function update(){
+    ticking = false;
+    // Só colapsa depois que o usuário rolar para além do fim da busca do hero
+    // (não ao carregar a página, mesmo que a busca já comece abaixo da dobra).
+    const collapsed = mq.matches && heroSearchForm.getBoundingClientRect().bottom < HEADER_HEIGHT;
+    headerBrand.hidden = collapsed;
+    compactSearch.classList.toggle('is-visible', collapsed);
+  }
+
+  window.addEventListener('scroll', () => {
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }, { passive: true });
+
+  if(mq.addEventListener) mq.addEventListener('change', update);
+  update();
+
+  compactSearch.addEventListener('submit', (e) => {
+    e.preventDefault();
+    searchQuery = compactInput.value.trim();
+    renderFeed();
+    document.getElementById('ocorrencias').scrollIntoView({ behavior: 'smooth' });
+  });
+}
+
 // ---------- Menu dropdown do header ----------
 function setupNavDropdowns(){
   const triggers = document.querySelectorAll('.nav-dropdown-trigger');
@@ -496,20 +538,12 @@ function setupNavDropdowns(){
 // ---------- Menu mobile ----------
 function setupNavToggle(){
   const toggle = document.getElementById('navToggle');
-  const nav = document.getElementById('mainNav');
-  if(!toggle || !nav) return;
+  const panel = document.getElementById('navPanel');
+  if(!toggle || !panel) return;
   toggle.addEventListener('click', () => {
-    const isOpen = nav.style.display === 'flex';
-    nav.style.display = isOpen ? 'none' : 'flex';
-    nav.style.flexDirection = 'column';
-    nav.style.position = 'absolute';
-    nav.style.top = '72px';
-    nav.style.left = '0';
-    nav.style.right = '0';
-    nav.style.background = '#fff';
-    nav.style.padding = '16px 24px';
-    nav.style.borderBottom = '1px solid var(--line)';
-    toggle.setAttribute('aria-expanded', String(!isOpen));
+    const isOpen = panel.classList.toggle('is-open');
+    toggle.classList.toggle('is-open', isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
   });
 }
 
@@ -524,5 +558,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupNavToggle();
   setupNavDropdowns();
   setupHeroSearch();
+  setupHeaderScrollSearch();
   renderFeed();
 });
