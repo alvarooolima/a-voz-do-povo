@@ -37,8 +37,13 @@ vercel
 - **Login / cadastro**: a validação de formato (e-mail, CPF com dígito verificador, telefone) é real, mas a autenticação em si é simulada localmente — não há verificação de senha contra um servidor. Para produção, plugue um provedor de autenticação (ex.: NextAuth, Clerk, Supabase Auth) e criptografe as senhas no backend.
 - **Fotos**: são convertidas para base64 e guardadas localmente; num backend real, o ideal é subir para um storage (ex.: Vercel Blob, S3, Cloudinary).
 
-## Avaliação do prefeito
-A página `prefeito.html` mostra o perfil do prefeito (nome, foto, partido e mandato) e permite que qualquer visitante dê uma nota de 1 a 5 estrelas, com comentário opcional. A média e a lista de avaliações também ficam salvas em `localStorage` — mesmo protótipo local das outras funcionalidades. Para editar os dados do prefeito (nome, partido, mandato e foto), altere o objeto `MAYOR` no topo de `avaliar.js`; para usar uma foto real, defina `foto: 'assets/sua-foto.jpg'`.
+## Avaliação do prefeito e reputação (inspirado no Reclame Aqui)
+A página `prefeito.html` mostra o perfil do prefeito (nome, foto, partido e mandato), um selo de "gestão verificada" e um **selo de reputação** (Reputação Ruim/Regular/Boa/Ótima/Voz 1000), calculado a partir da nota média das avaliações e da taxa de resolução dos relatos — a mesma lógica do selo RA1000 do Reclame Aqui, adaptada para governos. Abaixo, um **painel de desempenho** mostra relatos recebidos, % respondidos, aguardando resposta, % resolvidos, nota do cidadão (0–10) e tempo médio de resposta.
+
+Qualquer visitante pode dar uma nota de 1 a 5 estrelas com comentário opcional; a média, o selo e a lista de avaliações ficam em `localStorage`. Para editar os dados do prefeito, altere o objeto `MAYOR` no topo de `avaliar.js`; para usar uma foto real, defina `foto: 'assets/sua-foto.jpg'`.
+
+## Resposta oficial (modo prefeitura)
+No cabeçalho, o botão **"🏛️ Painel da prefeitura"** liga um modo de demonstração (salvo em `localStorage`, sem autenticação real) que revela, em cada relato do feed, um botão "Responder oficialmente". A resposta digitada aparece publicamente no card (como a resposta de uma empresa no Reclame Aqui) e também atualiza o status do relato. O feed ganhou os filtros "Respondidos" e "Não respondidos" para acompanhar isso. Numa versão real, esse painel seria restrito a uma conta oficial da prefeitura autenticada no backend.
 
 ## Personalização rápida
 - Cores: edite as variáveis no topo de `styles.css` (`--royal`, `--royal-dark`, etc.).

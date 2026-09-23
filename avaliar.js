@@ -189,6 +189,7 @@ function setupRateForm(){
     saveRatings(ratings);
     renderAverageScore();
     renderRatingList();
+    renderReputationPanel();
 
     msg.classList.remove('is-error');
     msg.textContent = 'Avaliação enviada. Obrigado por participar!';
@@ -262,6 +263,57 @@ function renderResolvedGrid(){
   `).join('');
 }
 
+// ---------- Reputação e desempenho ----------
+function computeReputation(){
+  const reports = typeof loadReports === 'function' ? loadReports() : [];
+  const ratings = loadRatings();
+
+  const recebidos = reports.length;
+  const respondidos = reports.filter(r => !!r.resposta).length;
+  const aguardando = recebidos - respondidos;
+  const resolvidos = reports.filter(r => r.status === 'Resolvido').length;
+  const pctRespondidos = recebidos ? Math.round((respondidos / recebidos) * 100) : 0;
+  const pctResolvidos = recebidos ? Math.round((resolvidos / recebidos) * 100) : 0;
+
+  const notaMedia = ratings.length ? ratings.reduce((acc, r) => acc + r.nota, 0) / ratings.length : 0;
+  const notaDez = notaMedia * 2;
+
+  const tempos = reports
+    .filter(r => r.resposta)
+    .map(r => Math.max(0, (new Date(r.resposta.data) - new Date(r.data)) / (1000 * 60 * 60 * 24)));
+  const tempoMedioDias = tempos.length ? tempos.reduce((a, b) => a + b, 0) / tempos.length : null;
+
+  let tier = 'sem-dados';
+  let label = 'Reputação em formação';
+  if(ratings.length > 0){
+    if(notaDez >= 9 && pctResolvidos >= 70){ tier = 'voz1000'; label = 'Voz 1000'; }
+    else if(notaDez >= 7){ tier = 'otima'; label = 'Reputação Ótima'; }
+    else if(notaDez >= 5){ tier = 'boa'; label = 'Reputação Boa'; }
+    else if(notaDez >= 3){ tier = 'regular'; label = 'Reputação Regular'; }
+    else{ tier = 'ruim'; label = 'Reputação Ruim'; }
+  }
+
+  return { recebidos, respondidos, aguardando, resolvidos, pctRespondidos, pctResolvidos, notaMedia, notaDez, tempoMedioDias, tier, label };
+}
+
+function renderReputationPanel(){
+  const badge = document.getElementById('reputationBadge');
+  if(!badge) return;
+  const rep = computeReputation();
+
+  badge.textContent = rep.label;
+  badge.className = 'reputation-badge tier-' + rep.tier;
+
+  document.getElementById('statRecebidos').textContent = rep.recebidos;
+  document.getElementById('statRespondidos').textContent = rep.recebidos ? rep.pctRespondidos + '%' : '—';
+  document.getElementById('statAguardando').textContent = rep.aguardando;
+  document.getElementById('statResolvidosPct').textContent = rep.recebidos ? rep.pctResolvidos + '%' : '—';
+  document.getElementById('statNotaDez').textContent = rep.notaMedia ? rep.notaDez.toFixed(1) : '—';
+  document.getElementById('statTempoResposta').textContent = rep.tempoMedioDias === null
+    ? '—'
+    : (rep.tempoMedioDias < 1 ? '< 1 dia' : Math.round(rep.tempoMedioDias) + ' dias');
+}
+
 // ---------- Init ----------
 document.addEventListener('DOMContentLoaded', () => {
   renderMayorProfile();
@@ -269,4 +321,5 @@ document.addEventListener('DOMContentLoaded', () => {
   setupRateForm();
   renderRatingList();
   renderResolvedGrid();
+  renderReputationPanel();
 });

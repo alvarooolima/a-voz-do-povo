@@ -28,6 +28,7 @@
       <a href="prefeito.html">Avalie o prefeito</a>
     </nav>
     <div class="header-actions">
+      <button type="button" class="btn btn-ghost prefeitura-toggle" id="prefeituraToggle" title="Simula o painel oficial da prefeitura para responder relatos (demonstração)">🏛️ Painel da prefeitura</button>
       <span class="user-chip" id="userChip" hidden></span>
       <a class="btn btn-ghost" id="loginLink" href="login.html">Entrar</a>
       <a class="btn btn-primary" href="#reportar">Reportar problema</a>
@@ -57,7 +58,12 @@
         </dl>
       </div>
       <div class="hero-art" aria-hidden="true">
-        <img src="assets/logo-blue.png" alt="" class="hero-logo">
+        <div class="hero-visual">
+          <img src="assets/hero-photo.jpg" alt="" class="hero-photo">
+          <span class="hero-badge">
+            <img src="assets/mark-white.png" alt="" width="30" height="24">
+          </span>
+        </div>
       </div>
     </div>
   </section>
@@ -174,6 +180,8 @@
           <button class="chip" data-filter="Em análise">Em análise</button>
           <button class="chip" data-filter="Em andamento">Em andamento</button>
           <button class="chip" data-filter="Resolvido">Resolvido</button>
+          <button class="chip" data-filter="Respondidos">Respondidos</button>
+          <button class="chip" data-filter="Não respondidos">Não respondidos</button>
         </div>
       </div>
 

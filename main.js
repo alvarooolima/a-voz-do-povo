@@ -2,6 +2,7 @@
 const STORAGE_KEY = 'avozdopovo_reports';
 const SUPPORTED_KEY = 'avozdopovo_supported';
 const SESSION_KEY = 'avozdopovo_session';
+const MODE_KEY = 'avozdopovo_modo_prefeitura';
 
 const CATEGORIES = [
   {
@@ -47,7 +48,11 @@ const SEED_REPORTS = [
     anonimo: false,
     status: 'Em andamento',
     apoios: 24,
-    data: '2026-09-12T10:00:00'
+    data: '2026-09-12T10:00:00',
+    resposta: {
+      texto: 'Equipe de tapa-buraco já foi acionada e deve concluir o serviço nesta semana.',
+      data: '2026-09-13T09:00:00'
+    }
   },
   {
     id: 'seed-2',
@@ -59,7 +64,8 @@ const SEED_REPORTS = [
     anonimo: false,
     status: 'Em análise',
     apoios: 11,
-    data: '2026-09-18T14:30:00'
+    data: '2026-09-18T14:30:00',
+    resposta: null
   },
   {
     id: 'seed-3',
@@ -71,7 +77,11 @@ const SEED_REPORTS = [
     anonimo: true,
     status: 'Resolvido',
     apoios: 8,
-    data: '2026-08-30T20:15:00'
+    data: '2026-08-30T20:15:00',
+    resposta: {
+      texto: 'Lâmpada substituída pela equipe de iluminação pública. Obrigado pelo relato!',
+      data: '2026-09-02T11:20:00'
+    }
   }
 ];
 
@@ -106,6 +116,20 @@ function formatDate(iso){
   const d = new Date(iso);
   if(isNaN(d)) return '';
   return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });
+}
+function isPrefeituraMode(){
+  try{ return localStorage.getItem(MODE_KEY) === '1'; }catch(e){ return false; }
+}
+function setPrefeituraMode(on){
+  try{ localStorage.setItem(MODE_KEY, on ? '1' : '0'); }catch(e){}
+}
+function saveResponse(id, texto, status){
+  const reports = loadReports();
+  const idx = reports.findIndex(r => r.id === id);
+  if(idx === -1) return;
+  reports[idx].resposta = { texto, data: new Date().toISOString() };
+  reports[idx].status = status;
+  saveReports(reports);
 }
 function showToast(msg){
   const toast = document.getElementById('toast');
@@ -154,7 +178,11 @@ function renderFeed(){
 
   const filtered = currentFilter === 'todos'
     ? reports
-    : reports.filter(r => r.status === currentFilter);
+    : currentFilter === 'Respondidos'
+      ? reports.filter(r => !!r.resposta)
+      : currentFilter === 'Não respondidos'
+        ? reports.filter(r => !r.resposta)
+        : reports.filter(r => r.status === currentFilter);
 
   if(filtered.length === 0){
     grid.innerHTML = '';
@@ -190,12 +218,59 @@ function renderFeed(){
           </button>
           <span class="report-date">${formatDate(r.data)}</span>
         </div>
+        ${r.resposta ? `
+        <div class="official-response">
+          <div class="official-response-head">
+            <span class="verified-dot">✔</span> Resposta da Prefeitura
+            <span class="response-date">${formatDate(r.resposta.data)}</span>
+          </div>
+          <p>${escapeHtml(r.resposta.texto)}</p>
+        </div>` : ''}
+        ${isPrefeituraMode() ? `
+        <div class="prefeitura-panel">
+          <button type="button" class="link-btn respond-btn" data-id="${r.id}">${r.resposta ? 'Editar resposta oficial' : 'Responder oficialmente'}</button>
+          <form class="response-form" data-id="${r.id}" hidden>
+            <textarea rows="3" placeholder="Escreva a resposta oficial..." required>${r.resposta ? escapeHtml(r.resposta.texto) : ''}</textarea>
+            <select>
+              <option value="Em análise" ${r.status === 'Em análise' ? 'selected' : ''}>Em análise</option>
+              <option value="Em andamento" ${r.status === 'Em andamento' ? 'selected' : ''}>Em andamento</option>
+              <option value="Resolvido" ${r.status === 'Resolvido' ? 'selected' : ''}>Resolvido</option>
+            </select>
+            <div class="response-form-actions">
+              <button type="submit" class="btn btn-primary">Salvar resposta</button>
+              <button type="button" class="link-btn cancel-response">Cancelar</button>
+            </div>
+          </form>
+        </div>` : ''}
       </div>
     </article>`;
   }).join('');
 
   grid.querySelectorAll('.support-btn').forEach(btn => {
     btn.addEventListener('click', () => toggleSupport(btn.dataset.id));
+  });
+
+  grid.querySelectorAll('.respond-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const form = btn.parentElement.querySelector('.response-form');
+      if(form) form.hidden = !form.hidden;
+    });
+  });
+  grid.querySelectorAll('.cancel-response').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.response-form').hidden = true;
+    });
+  });
+  grid.querySelectorAll('.response-form').forEach(form => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const texto = form.querySelector('textarea').value.trim();
+      const status = form.querySelector('select').value;
+      if(!texto) return;
+      saveResponse(form.dataset.id, texto, status);
+      renderFeed();
+      showToast('Resposta oficial publicada!');
+    });
   });
 }
 
@@ -331,6 +406,27 @@ function setupSession(){
   }catch(e){}
 }
 
+// ---------- Modo prefeitura ----------
+function setupPrefeituraToggle(){
+  const btn = document.getElementById('prefeituraToggle');
+  if(!btn) return;
+
+  function paint(){
+    const on = isPrefeituraMode();
+    btn.classList.toggle('is-active', on);
+    btn.setAttribute('aria-pressed', String(on));
+    btn.textContent = on ? '🏛️ Painel da prefeitura: ativo' : '🏛️ Painel da prefeitura';
+  }
+  paint();
+
+  btn.addEventListener('click', () => {
+    setPrefeituraMode(!isPrefeituraMode());
+    paint();
+    if(typeof renderFeed === 'function') renderFeed();
+    showToast(isPrefeituraMode() ? 'Modo prefeitura ativado (demonstração)' : 'Modo prefeitura desativado');
+  });
+}
+
 // ---------- Menu mobile ----------
 function setupNavToggle(){
   const toggle = document.getElementById('navToggle');
@@ -360,5 +456,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupReportForm();
   setupSession();
   setupNavToggle();
+  setupPrefeituraToggle();
   renderFeed();
 });
