@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avalie o Prefeito — A Voz do Povo</title>
+<meta name="description" content="Avalie a gestão do prefeito com base nos problemas resolvidos na cidade.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%231746D6%22/><text x=%2250%22 y=%2266%22 font-size=%2258%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22>V</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <img src="assets/mark-white.png" alt="" width="20" height="16">
+      </span>
+      <span class="brand-name">A Voz do Povo</span>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html#categorias">Categorias</a>
+      <a href="index.html#ocorrencias">Ocorrências</a>
+      <a href="prefeito.html">Avalie o prefeito</a>
+    </nav>
+    <div class="header-actions">
+      <span class="user-chip" id="userChip" hidden></span>
+      <a class="btn btn-ghost" id="loginLink" href="login.html">Entrar</a>
+      <a class="btn btn-primary" href="index.html#reportar">Reportar problema</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- CABEÇALHO DA PÁGINA -->
+  <section class="section mayor-hero">
+    <div class="wrap">
+      <p class="eyebrow">Avaliação da gestão</p>
+      <h1 class="mayor-title">O que a cidade acha do prefeito?</h1>
+      <p class="muted mayor-lede">A cada problema resolvido, a população pode avaliar a gestão do prefeito com uma nota de 1 a 5 estrelas. Sua avaliação é pública e ajuda a mostrar como a cidade enxerga o trabalho feito.</p>
+    </div>
+  </section>
+
+  <!-- PERFIL DO PREFEITO -->
+  <section class="section mayor-section" id="prefeito">
+    <div class="wrap mayor-wrap">
+
+      <div class="mayor-card">
+        <div class="mayor-photo" id="mayorPhoto">JS</div>
+        <div class="mayor-info">
+          <h2 id="mayorNome">João Silva</h2>
+          <span class="mayor-party" id="mayorPartido">Partido Progressista Municipal (PPM)</span>
+          <p class="mayor-mandato" id="mayorMandato">Mandato 2025–2028</p>
+
+          <div class="mayor-score">
+            <div class="stars-display" id="avgStars" aria-hidden="true"></div>
+            <div class="mayor-score-text">
+              <strong id="avgScoreNumber">—</strong>
+              <span id="avgScoreCount" class="muted">Nenhuma avaliação ainda</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rate-card">
+        <h3>Deixe sua avaliação</h3>
+        <p class="muted">Baseie sua nota nos problemas que já foram resolvidos na sua região.</p>
+
+        <form id="rateForm" novalidate>
+          <div class="star-picker" id="starPicker" role="radiogroup" aria-label="Nota de 1 a 5 estrelas">
+            <button type="button" class="star-btn" data-value="1" role="radio" aria-checked="false" aria-label="1 estrela">★</button>
+            <button type="button" class="star-btn" data-value="2" role="radio" aria-checked="false" aria-label="2 estrelas">★</button>
+            <button type="button" class="star-btn" data-value="3" role="radio" aria-checked="false" aria-label="3 estrelas">★</button>
+            <button type="button" class="star-btn" data-value="4" role="radio" aria-checked="false" aria-label="4 estrelas">★</button>
+            <button type="button" class="star-btn" data-value="5" role="radio" aria-checked="false" aria-label="5 estrelas">★</button>
+          </div>
+          <input type="hidden" id="rateValue" value="0" required>
+
+          <div class="field">
+            <label for="rateComentario">Comentário (opcional)</label>
+            <textarea id="rateComentario" rows="3" maxlength="240" placeholder="Conte por que deu essa nota..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Enviar avaliação</button>
+          <p class="form-msg" id="rateMsg" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROBLEMAS RESOLVIDOS -->
+  <section class="section section-tint" id="resolvidos">
+    <div class="wrap">
+      <p class="eyebrow">Base da avaliação</p>
+      <h2>Problemas já resolvidos pela prefeitura</h2>
+      <div class="feed-grid" id="resolvedGrid"><!-- injetado via JS --></div>
+      <p class="feed-empty" id="resolvedEmpty" hidden>Nenhum problema resolvido ainda. Assim que a prefeitura resolver ocorrências, elas aparecem aqui.</p>
+    </div>
+  </section>
+
+  <!-- LISTA DE AVALIAÇÕES -->
+  <section class="section" id="avaliacoes">
+    <div class="wrap">
+      <p class="eyebrow">Opinião da população</p>
+      <h2>Avaliações recentes</h2>
+      <div class="rating-list" id="ratingList"><!-- injetado via JS --></div>
+      <p class="feed-empty" id="ratingEmpty" hidden>Ainda não há avaliações. Seja o primeiro a avaliar.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <span class="brand-name light">A Voz do Povo</span>
+      <p class="muted-light">Um canal aberto entre quem mora na cidade e quem cuida dela.</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html#reportar">Reportar problema</a>
+      <a href="index.html#ocorrencias">Ocorrências</a>
+      <a href="prefeito.html">Avalie o prefeito</a>
+      <a href="login.html">Entrar</a>
+    </div>
+  </div>
+  <p class="footer-copy">© <span id="year"></span> A Voz do Povo. Protótipo de demonstração.</p>
+</footer>
+<script src="main.js"></script>
+<script src="avaliar.js"></script>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+</body>
+</html>

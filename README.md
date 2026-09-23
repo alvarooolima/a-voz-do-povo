@@ -6,10 +6,13 @@ Site cidadão para relatar problemas urbanos (buracos, poda de árvores, ilumina
 ```
 a-voz-do-povo/
 ├── index.html      → página inicial (hero, categorias, formulário de relato, feed)
-├── login.html       → login / cadastro / esqueci a senha
-├── css/styles.css   → design system (azul royal + branco)
-├── js/main.js        → lógica da página inicial
-├── js/auth.js        → lógica de autenticação
+├── login.html      → login / cadastro / esqueci a senha (só o formulário, sem menu)
+├── prefeito.html   → avaliação do prefeito (nome, foto, partido e nota em estrelas)
+├── styles.css      → design system (azul royal + branco)
+├── main.js         → lógica da página inicial (relatos e feed)
+├── auth.js         → lógica de autenticação
+├── avaliar.js       → lógica da avaliação do prefeito
+├── assets/         → logotipo extraído (versões azul e branca, cheia e ícone)
 └── vercel.json
 ```
 
@@ -34,7 +37,12 @@ vercel
 - **Login / cadastro**: a validação de formato (e-mail, CPF com dígito verificador, telefone) é real, mas a autenticação em si é simulada localmente — não há verificação de senha contra um servidor. Para produção, plugue um provedor de autenticação (ex.: NextAuth, Clerk, Supabase Auth) e criptografe as senhas no backend.
 - **Fotos**: são convertidas para base64 e guardadas localmente; num backend real, o ideal é subir para um storage (ex.: Vercel Blob, S3, Cloudinary).
 
+## Avaliação do prefeito
+A página `prefeito.html` mostra o perfil do prefeito (nome, foto, partido e mandato) e permite que qualquer visitante dê uma nota de 1 a 5 estrelas, com comentário opcional. A média e a lista de avaliações também ficam salvas em `localStorage` — mesmo protótipo local das outras funcionalidades. Para editar os dados do prefeito (nome, partido, mandato e foto), altere o objeto `MAYOR` no topo de `avaliar.js`; para usar uma foto real, defina `foto: 'assets/sua-foto.jpg'`.
+
 ## Personalização rápida
-- Cores: edite as variáveis no topo de `css/styles.css` (`--royal`, `--royal-dark`, etc.).
-- Categorias de problema: edite o array `CATEGORIES` em `js/main.js`.
+- Cores: edite as variáveis no topo de `styles.css` (`--royal`, `--royal-dark`, etc.).
+- Categorias de problema: edite o array `CATEGORIES` em `main.js`.
+- Dados do prefeito: edite o objeto `MAYOR` em `avaliar.js`.
+- Logotipo: os arquivos ficam em `assets/` (`logo-*.png` = ilustração completa, `mark-*.png` = ícone compacto usado no cabeçalho).
 - Textos: todo o conteúdo está direto no HTML, em português.
