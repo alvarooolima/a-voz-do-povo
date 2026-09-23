@@ -95,6 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('goRegister').addEventListener('click', showRegister);
   document.getElementById('goLogin').addEventListener('click', showLogin);
 
+  if(window.location.hash === '#criar-conta') showRegister();
+
   // Esqueci a senha
   document.getElementById('forgotLink').addEventListener('click', showForgot);
   document.getElementById('forgotBack').addEventListener('click', showLogin);

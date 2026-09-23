@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%231746D6%22/><text x=%2250%22 y=%2266%22 font-size=%2258%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22>V</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,21 +16,29 @@
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="index.html">
-      <span class="brand-mark" aria-hidden="true">
-        <img src="assets/mark-white.png" alt="" width="20" height="16">
-      </span>
       <span class="brand-name">A Voz do Povo</span>
     </a>
     <nav class="main-nav" id="mainNav">
-      <a href="index.html#categorias">Categorias</a>
-      <a href="index.html#ocorrencias">Ocorrências</a>
-      <a href="prefeito.html">Avalie o prefeito</a>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-trigger">Para você <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="index.html#reportar">Reportar problema</a>
+          <a href="index.html#categorias">Categorias</a>
+          <a href="index.html#ocorrencias">Ocorrências</a>
+          <a href="prefeito.html">Avalie o prefeito</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-trigger">Para a prefeitura <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <button type="button" id="prefeituraToggle">Painel da prefeitura</button>
+        </div>
+      </div>
     </nav>
     <div class="header-actions">
-      <button type="button" class="btn btn-ghost prefeitura-toggle" id="prefeituraToggle" title="Simula o painel oficial da prefeitura para responder relatos (demonstração)">🏛️ Painel da prefeitura</button>
       <span class="user-chip" id="userChip" hidden></span>
       <a class="btn btn-ghost" id="loginLink" href="login.html">Entrar</a>
-      <a class="btn btn-primary" href="index.html#reportar">Reportar problema</a>
+      <a class="btn btn-primary" href="login.html#criar-conta">Criar conta</a>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -104,24 +112,28 @@
     <div class="wrap">
       <p class="eyebrow">Desempenho da gestão</p>
       <h2>Como a prefeitura está respondendo à população</h2>
-      <div class="perf-grid">
-        <div class="perf-item"><strong id="statRecebidos">0</strong><span>relatos recebidos</span></div>
-        <div class="perf-item"><strong id="statRespondidos">—</strong><span>respondidos</span></div>
-        <div class="perf-item"><strong id="statAguardando">0</strong><span>aguardando resposta</span></div>
-        <div class="perf-item"><strong id="statResolvidosPct">—</strong><span>resolvidos</span></div>
-        <div class="perf-item"><strong id="statNotaDez">—</strong><span>nota do cidadão (0–10)</span></div>
-        <div class="perf-item"><strong id="statTempoResposta">—</strong><span>tempo médio de resposta</span></div>
+      <div class="balloon-panel">
+        <div class="perf-grid">
+          <div class="perf-item"><strong id="statRecebidos">0</strong><span>relatos recebidos</span></div>
+          <div class="perf-item"><strong id="statRespondidos">—</strong><span>respondidos</span></div>
+          <div class="perf-item"><strong id="statAguardando">0</strong><span>aguardando resposta</span></div>
+          <div class="perf-item"><strong id="statResolvidosPct">—</strong><span>resolvidos</span></div>
+          <div class="perf-item"><strong id="statNotaDez">—</strong><span>nota do cidadão (0–10)</span></div>
+          <div class="perf-item"><strong id="statTempoResposta">—</strong><span>tempo médio de resposta</span></div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- PROBLEMAS RESOLVIDOS -->
-  <section class="section section-tint" id="resolvidos">
+  <section class="section" id="resolvidos">
     <div class="wrap">
       <p class="eyebrow">Base da avaliação</p>
       <h2>Problemas já resolvidos pela prefeitura</h2>
-      <div class="feed-grid" id="resolvedGrid"><!-- injetado via JS --></div>
-      <p class="feed-empty" id="resolvedEmpty" hidden>Nenhum problema resolvido ainda. Assim que a prefeitura resolver ocorrências, elas aparecem aqui.</p>
+      <div class="balloon-panel">
+        <div class="feed-grid" id="resolvedGrid"><!-- injetado via JS --></div>
+        <p class="feed-empty" id="resolvedEmpty" hidden>Nenhum problema resolvido ainda. Assim que a prefeitura resolver ocorrências, elas aparecem aqui.</p>
+      </div>
     </div>
   </section>
 

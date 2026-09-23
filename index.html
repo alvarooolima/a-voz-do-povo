@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%231746D6%22/><text x=%2250%22 y=%2266%22 font-size=%2258%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22>V</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,22 +16,30 @@
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="index.html">
-      <span class="brand-mark" aria-hidden="true">
-        <img src="assets/mark-white.png" alt="" width="20" height="16">
-      </span>
       <span class="brand-name">A Voz do Povo</span>
     </a>
     <nav class="main-nav" id="mainNav">
-      <a href="#categorias">Categorias</a>
-      <a href="#como-funciona">Como funciona</a>
-      <a href="#ocorrencias">Ocorrências</a>
-      <a href="prefeito.html">Avalie o prefeito</a>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-trigger">Para você <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="#reportar">Reportar problema</a>
+          <a href="#categorias">Categorias</a>
+          <a href="#como-funciona">Como funciona</a>
+          <a href="#ocorrencias">Ocorrências</a>
+          <a href="prefeito.html">Avalie o prefeito</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-trigger">Para a prefeitura <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <button type="button" id="prefeituraToggle">Painel da prefeitura</button>
+        </div>
+      </div>
     </nav>
     <div class="header-actions">
-      <button type="button" class="btn btn-ghost prefeitura-toggle" id="prefeituraToggle" title="Simula o painel oficial da prefeitura para responder relatos (demonstração)">🏛️ Painel da prefeitura</button>
       <span class="user-chip" id="userChip" hidden></span>
       <a class="btn btn-ghost" id="loginLink" href="login.html">Entrar</a>
-      <a class="btn btn-primary" href="#reportar">Reportar problema</a>
+      <a class="btn btn-primary" href="login.html#criar-conta">Criar conta</a>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -83,9 +91,6 @@
       <div class="hero-art" aria-hidden="true">
         <div class="hero-visual">
           <img src="assets/hero-photo.jpg" alt="" class="hero-photo">
-          <span class="hero-badge">
-            <img src="assets/mark-white.png" alt="" width="30" height="24">
-          </span>
         </div>
       </div>
     </div>
@@ -101,7 +106,7 @@
   </section>
 
   <!-- COMO FUNCIONA -->
-  <section class="section section-tint" id="como-funciona">
+  <section class="section" id="como-funciona">
     <div class="wrap">
       <p class="eyebrow">Como funciona</p>
       <h2>Da rua até a resolução, em três passos</h2>
@@ -191,13 +196,12 @@
   </section>
 
   <!-- FEED -->
-  <section class="section section-tint" id="ocorrencias">
+  <section class="section" id="ocorrencias">
     <div class="wrap">
-      <div class="feed-head">
-        <div>
-          <p class="eyebrow">Ocorrências da cidade</p>
-          <h2>O que a vizinhança já reportou</h2>
-        </div>
+      <p class="eyebrow">Ocorrências da cidade</p>
+      <h2>O que a vizinhança já reportou</h2>
+
+      <div class="balloon-panel">
         <div class="filters" id="filters">
           <button class="chip is-active" data-filter="todos">Todos</button>
           <button class="chip" data-filter="Em análise">Em análise</button>
@@ -206,15 +210,15 @@
           <button class="chip" data-filter="Respondidos">Respondidos</button>
           <button class="chip" data-filter="Não respondidos">Não respondidos</button>
         </div>
+
+        <p class="search-indicator" id="searchIndicator" hidden>
+          Resultados para "<span id="searchIndicatorTerm"></span>"
+          <button type="button" id="searchIndicatorClear">✕ limpar busca</button>
+        </p>
+
+        <div class="feed-grid" id="feedGrid"><!-- injetado via JS --></div>
+        <p class="feed-empty" id="feedEmpty" hidden>Nenhuma ocorrência encontrada para esse filtro.</p>
       </div>
-
-      <p class="search-indicator" id="searchIndicator" hidden>
-        Resultados para "<span id="searchIndicatorTerm"></span>"
-        <button type="button" id="searchIndicatorClear">✕ limpar busca</button>
-      </p>
-
-      <div class="feed-grid" id="feedGrid"><!-- injetado via JS --></div>
-      <p class="feed-empty" id="feedEmpty" hidden>Nenhuma ocorrência encontrada para esse filtro.</p>
     </div>
   </section>
 </main>

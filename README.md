@@ -46,11 +46,16 @@ Qualquer visitante pode dar uma nota de 1 a 5 estrelas com comentário opcional;
 A seção inicial ganhou a mesma estrutura da home do Reclame Aqui — busca em destaque + linha de "ferramentas para você" — adaptada à nossa identidade: campo de busca que filtra as ocorrências por rua, bairro, categoria ou palavra-chave (rola até o feed e mostra um indicador "Resultados para..." com opção de limpar), e 4 atalhos (Reportar problema, Ver ocorrências, Avalie o prefeito, Painel da prefeitura).
 
 ## Resposta oficial (modo prefeitura)
-No cabeçalho, o botão **"🏛️ Painel da prefeitura"** liga um modo de demonstração (salvo em `localStorage`, sem autenticação real) que revela, em cada relato do feed, um botão "Responder oficialmente". A resposta digitada aparece publicamente no card (como a resposta de uma empresa no Reclame Aqui) e também atualiza o status do relato. O feed ganhou os filtros "Respondidos" e "Não respondidos" para acompanhar isso. Numa versão real, esse painel seria restrito a uma conta oficial da prefeitura autenticada no backend.
+No menu "Para a prefeitura" do cabeçalho, o item **"Painel da prefeitura"** liga um modo de demonstração (salvo em `localStorage`, sem autenticação real) que revela, em cada relato do feed, um botão "Responder oficialmente". A resposta digitada aparece publicamente no card (como a resposta de uma empresa no Reclame Aqui) e também atualiza o status do relato. O feed ganhou os filtros "Respondidos" e "Não respondidos" para acompanhar isso. Numa versão real, esse painel seria restrito a uma conta oficial da prefeitura autenticada no backend.
+
+## Identidade visual
+- **Tipografia**: Inter (sans-serif) em todo o site — sem serifa, pensada para leitura fácil em qualquer idade.
+- **Logotipo**: apenas o texto "A Voz do Povo" (sem ícone/símbolo) no cabeçalho e nas páginas de login/cadastro. Os arquivos de ilustração extraídos ficam em `assets/` (`logo-*.png`, `mark-*.png`) caso queira reaproveitá-los em outro lugar.
+- **Fundo**: todas as páginas são brancas; onde há "balões" (badges, chips, cartões de estatística — como no Reclame Aqui), eles ficam dentro de um painel com fundo azul royal bem claro (classe `.balloon-panel`).
+- **Cabeçalho**: minimalista, no formato do Reclame Aqui — wordmark + dois menus dropdown ("Para você" / "Para a prefeitura") + botões "Entrar" e "Criar conta".
 
 ## Personalização rápida
 - Cores: edite as variáveis no topo de `styles.css` (`--royal`, `--royal-dark`, etc.).
 - Categorias de problema: edite o array `CATEGORIES` em `main.js`.
 - Dados do prefeito: edite o objeto `MAYOR` em `avaliar.js`.
-- Logotipo: os arquivos ficam em `assets/` (`logo-*.png` = ilustração completa, `mark-*.png` = ícone compacto usado no cabeçalho).
 - Textos: todo o conteúdo está direto no HTML, em português.

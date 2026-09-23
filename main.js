@@ -487,6 +487,26 @@ function setupPrefeituraToggle(){
   });
 }
 
+// ---------- Menu dropdown do header ----------
+function setupNavDropdowns(){
+  const triggers = document.querySelectorAll('.nav-dropdown-trigger');
+  if(!triggers.length) return;
+
+  triggers.forEach(trigger => {
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const dropdown = trigger.closest('.nav-dropdown');
+      const wasOpen = dropdown.classList.contains('is-open');
+      document.querySelectorAll('.nav-dropdown.is-open').forEach(d => d.classList.remove('is-open'));
+      if(!wasOpen) dropdown.classList.add('is-open');
+    });
+  });
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.nav-dropdown.is-open').forEach(d => d.classList.remove('is-open'));
+  });
+}
+
 // ---------- Menu mobile ----------
 function setupNavToggle(){
   const toggle = document.getElementById('navToggle');
@@ -516,6 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupReportForm();
   setupSession();
   setupNavToggle();
+  setupNavDropdowns();
   setupPrefeituraToggle();
   setupHeroSearch();
   renderFeed();
