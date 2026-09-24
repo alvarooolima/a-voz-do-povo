@@ -203,13 +203,14 @@ function updateCategoryStats(){
   });
 }
 
-const catMobile = window.matchMedia('(max-width: 760px)');
+const catNarrow = window.matchMedia('(max-width: 760px)');
+const catWide = window.matchMedia('(min-width: 1000px)');
 let catBound = false;
 
 function renderCategories(){
   const track = document.getElementById('catTrack');
   if(!track) return;
-  const perSlide = catMobile.matches ? 1 : 3;
+  const perSlide = catNarrow.matches ? 1 : catWide.matches ? 2 : 3;
   const pages = Math.ceil(CATEGORIES.length / perSlide);
 
   const card = (c, i) => `
@@ -277,7 +278,7 @@ function renderCategories(){
     });
     window.addEventListener('resize', () => catGoTo(catCurrent(), true));
     const onChange = () => renderCategories();
-    if(catMobile.addEventListener) catMobile.addEventListener('change', onChange);
+    [catNarrow, catWide].forEach(mq => { if(mq.addEventListener) mq.addEventListener('change', onChange); });
   }
   catUpdate();
 }

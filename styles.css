@@ -182,9 +182,9 @@ button{font-family:inherit;}
 .section h2{font-size:clamp(1.5rem, 2.4vw, 2rem); max-width:22ch; color:var(--ink);}
 
 /* categorias: carrossel, um card por slide */
-.cat-carousel{max-width:1100px; margin:0 auto;}
+.cat-carousel{width:100%; flex:1; display:flex; flex-direction:column;}
 .cat-carousel-head{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px;}
-.cat-carousel-head h3{font-size:1.25rem; margin:0;}
+.cat-carousel-head h2{font-size:1.35rem; margin:0; max-width:none;}
 .cat-arrows{display:flex; gap:10px;}
 .cat-arrow{
   width:46px; height:46px; border-radius:50%; border:1.5px solid var(--line); background:var(--white);
@@ -219,7 +219,8 @@ button{font-family:inherit;}
   margin-top:auto; padding:12px 14px; border-radius:var(--radius-s);
   background:var(--royal-tint); color:var(--ink); font-weight:700; font-size:.9rem; text-align:center;
 }
-.cat-slide-actions{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:6px;}
+.cat-slide-actions{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 10px; margin-top:6px;}
+.cat-slide-actions .link-btn{white-space:nowrap;}
 .cat-slide-actions .btn{padding:9px 18px; font-size:.88rem;}
 .cat-slide-actions .link-btn{font-size:.9rem;}
 .cat-foot{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:16px;}
@@ -234,20 +235,25 @@ button{font-family:inherit;}
 @media (prefers-reduced-motion: reduce){ .cat-dot{transition:none;} }
 
 /* steps */
-.steps{
-  list-style:none; margin:36px 0 0; padding:0;
-  display:grid; grid-template-columns:repeat(3,1fr); gap:28px;
+/* painéis lado a lado: categorias + como funciona */
+.duo-grid{display:grid; grid-template-columns:1.25fr 1fr; gap:24px; align-items:stretch;}
+.duo-panel.balloon-panel{margin-top:0; display:flex; flex-direction:column; min-width:0;}
+.duo-steps{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px; flex:1;}
+.duo-steps li{
+  display:flex; align-items:center; gap:16px; flex:1;
+  background:var(--white); border-radius:var(--radius-m); padding:18px 20px; box-shadow:var(--shadow-card);
 }
-.steps li{background:var(--white); border-radius:var(--radius-m); padding:26px; border:1px solid var(--line);}
-.step-n{
-  display:inline-flex; align-items:center; justify-content:center;
-  width:32px; height:32px; border-radius:50%;
-  background:var(--royal); color:var(--white);
-  font-family:var(--font-display); font-weight:600;
-  margin-bottom:14px;
+.duo-step-n{
+  flex:none; width:44px; height:44px; border-radius:50%; background:var(--royal); color:var(--white);
+  display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.15rem;
 }
-.steps h3{font-size:1.05rem;}
-.steps p{font-size:.92rem; color:var(--muted); margin:0;}
+.duo-steps h3{font-size:1.05rem; margin:0 0 .25em;}
+.duo-steps p{font-size:.92rem; line-height:1.5; color:var(--muted); margin:0;}
+.duo-link{
+  align-self:flex-end; margin-top:16px; background:none; border:0; cursor:pointer;
+  font-family:inherit; font-size:.95rem; font-weight:700; color:var(--ink); padding:6px 2px;
+}
+.duo-link:hover{color:var(--royal);}
 
 /* ============ FORM ============ */
 .report-wrap{display:grid; grid-template-columns:.85fr 1.15fr; gap:56px;}
@@ -719,7 +725,7 @@ button{font-family:inherit;}
   .hero-art{order:-1; max-width:340px; margin:0 auto;}
   .report-wrap{grid-template-columns:1fr;}
   .report-form{grid-template-columns:1fr;}
-  .steps{grid-template-columns:1fr;}
+  .duo-grid{grid-template-columns:1fr;}
   .feed-grid{grid-template-columns:repeat(2,1fr);}
   .auth-card{padding:28px 22px;}
   .mayor-wrap{grid-template-columns:1fr;}
