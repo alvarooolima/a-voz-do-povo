@@ -263,36 +263,55 @@
     </div>
   </section>
 
-  <!-- OCORRÊNCIAS + MAPA (um único card) -->
-  <section class="section" id="ocorrencias-mapa">
+  <!-- MAPA (primeiro: mostra o problema perto de você) -->
+  <section class="section stack-section" id="mapa-secao">
     <div class="wrap duo-wrap">
-      <div class="balloon-panel unified-panel" id="ocorrencias">
+      <div class="balloon-panel stack-panel" id="mapa">
+        <div class="stack-head">
+          <div>
+            <h2>Veja onde estão os problemas da sua região</h2>
+            <p class="stack-sub">Toque num pino para ver o que a vizinhança relata por perto — e reporte o que você encontrar.</p>
+          </div>
+          <div class="map-actions">
+            <a class="btn btn-outline" id="mapGmaps" href="https://www.google.com/maps" target="_blank" rel="noopener">Google Maps ↗</a>
+            <button type="button" class="btn btn-primary" id="mapLocate">Usar minha localização</button>
+          </div>
+        </div>
+        <ul class="map-legend stack-legend" aria-label="Legenda dos pinos">
+          <li><span class="dot dot-analise"></span>Em análise</li>
+          <li><span class="dot dot-andamento"></span>Em andamento</li>
+          <li><span class="dot dot-resolvido"></span>Resolvido</li>
+        </ul>
+        <div class="map-layout">
+          <div class="map-canvas" id="occMap" role="application" aria-label="Mapa das ocorrências. As mesmas informações estão na lista ao lado do mapa."></div>
+          <aside class="map-side" id="mapSide" aria-live="polite"></aside>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="unified-head">
+  <!-- OCORRÊNCIAS (logo abaixo do mapa) -->
+  <section class="section stack-section" id="ocorrencias-secao">
+    <div class="wrap duo-wrap">
+      <div class="balloon-panel stack-panel" id="ocorrencias">
+        <div class="stack-head">
           <div>
             <h2>Ocorrências da cidade</h2>
-            <p class="unified-sub">Veja onde estão os problemas da sua região</p>
+            <p class="stack-sub">O que a vizinhança já reportou. Curta, comente e acompanhe as respostas da prefeitura.</p>
           </div>
-          <div class="unified-tools">
-            <ul class="map-legend" aria-label="Legenda dos pinos">
-              <li><span class="dot dot-analise"></span>Em análise</li>
-              <li><span class="dot dot-andamento"></span>Em andamento</li>
-              <li><span class="dot dot-resolvido"></span>Resolvido</li>
-            </ul>
-            <div class="filter-dropdown" id="filterDropdown">
-              <button type="button" class="filter-trigger" id="filterTrigger">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M7 12h10M10.5 18h3" stroke="#0C3B79" stroke-width="1.8" stroke-linecap="round"/></svg>
-                Filtrar: <strong id="filterTriggerLabel">Todos</strong>
-                <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <div class="filter-menu filter-menu-right">
-                <button type="button" class="filter-option is-active" data-filter="todos">Todos</button>
-                <button type="button" class="filter-option" data-filter="Em análise">Em análise</button>
-                <button type="button" class="filter-option" data-filter="Em andamento">Em andamento</button>
-                <button type="button" class="filter-option" data-filter="Resolvido">Resolvido</button>
-                <button type="button" class="filter-option" data-filter="Respondidos">Respondidos</button>
-                <button type="button" class="filter-option" data-filter="Não respondidos">Não respondidos</button>
-              </div>
+          <div class="filter-dropdown" id="filterDropdown">
+            <button type="button" class="filter-trigger" id="filterTrigger">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M7 12h10M10.5 18h3" stroke="#0C3B79" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Filtrar: <strong id="filterTriggerLabel">Todos</strong>
+              <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="filter-menu filter-menu-right">
+              <button type="button" class="filter-option is-active" data-filter="todos">Todos</button>
+              <button type="button" class="filter-option" data-filter="Em análise">Em análise</button>
+              <button type="button" class="filter-option" data-filter="Em andamento">Em andamento</button>
+              <button type="button" class="filter-option" data-filter="Resolvido">Resolvido</button>
+              <button type="button" class="filter-option" data-filter="Respondidos">Respondidos</button>
+              <button type="button" class="filter-option" data-filter="Não respondidos">Não respondidos</button>
             </div>
           </div>
         </div>
@@ -302,26 +321,8 @@
           <button type="button" id="searchIndicatorClear">✕ limpar busca</button>
         </p>
 
-        <div class="unified-body">
-          <div class="unified-feed">
-            <div class="feed-scroll">
-              <div class="feed-grid" id="feedGrid"><!-- injetado via JS --></div>
-              <p class="feed-empty" id="feedEmpty" hidden>Nenhuma ocorrência encontrada para esse filtro.</p>
-            </div>
-          </div>
-
-          <div class="unified-map" id="mapa">
-            <div class="map-actions">
-              <a class="btn btn-outline" id="mapGmaps" href="https://www.google.com/maps" target="_blank" rel="noopener">Google Maps ↗</a>
-              <button type="button" class="btn btn-primary" id="mapLocate">Usar minha localização</button>
-            </div>
-            <div class="map-stack">
-              <div class="map-canvas" id="occMap" role="application" aria-label="Mapa das ocorrências. As mesmas informações estão na lista abaixo do mapa."></div>
-              <aside class="map-side" id="mapSide" aria-live="polite"></aside>
-            </div>
-          </div>
-        </div>
-
+        <div class="feed-grid" id="feedGrid"><!-- injetado via JS --></div>
+        <p class="feed-empty" id="feedEmpty" hidden>Nenhuma ocorrência encontrada para esse filtro.</p>
       </div>
     </div>
   </section>
