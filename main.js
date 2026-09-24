@@ -191,42 +191,42 @@ function showToast(msg){
 }
 
 // ---------- Categorias (carrossel: um card por slide) ----------
-function categoryStatsText(nome){
+function categoryStatsHtml(nome){
   const doCat = loadReports().filter(r => r.categoria === nome);
-  if(doCat.length === 0) return 'Nenhum relato ainda';
   const resolvidos = doCat.filter(r => r.status === 'Resolvido').length;
-  return doCat.length + (doCat.length === 1 ? ' relato' : ' relatos') + ' · ' + resolvidos + (resolvidos === 1 ? ' resolvido' : ' resolvidos');
+  const check = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const dash = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12h12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
+  const badge = '<span class="cat-stat-badge ' + (resolvidos ? 'is-ok' : '') + '">' + (resolvidos ? check : dash) + '</span>';
+  if(doCat.length === 0){
+    return badge + '<span class="cat-stat-text"><strong>Sem relatos</strong><span>Seja o primeiro</span></span>';
+  }
+  return badge + '<span class="cat-stat-text"><strong>' + doCat.length + (doCat.length === 1 ? ' relato' : ' relatos') + '</strong><span>' + resolvidos + (resolvidos === 1 ? ' resolvido' : ' resolvidos') + '</span></span>';
 }
 function updateCategoryStats(){
   document.querySelectorAll('[data-cat-stats]').forEach(el => {
-    el.textContent = categoryStatsText(el.dataset.catStats);
+    el.innerHTML = categoryStatsHtml(el.dataset.catStats);
   });
 }
 
 const catNarrow = window.matchMedia('(max-width: 760px)');
-const catWide = window.matchMedia('(min-width: 1000px)');
 let catBound = false;
 
 function renderCategories(){
   const track = document.getElementById('catTrack');
   if(!track) return;
-  const perSlide = catNarrow.matches ? 1 : catWide.matches ? 2 : 3;
+  const perSlide = catNarrow.matches ? 1 : 3;
   const pages = Math.ceil(CATEGORIES.length / perSlide);
 
   const card = (c, i) => `
-    <div class="cat-card2">
-      <div class="cat-slide-top">
-        <span class="cat-slide-icon"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg></span>
+    <button type="button" class="cat-card2" data-cat-view="${c.nome}" aria-label="${c.nome}. Ver relatos desta categoria">
+      <span class="cat-slide-top">
+        <span class="cat-slide-icon"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg></span>
         <span class="cat-rank" aria-hidden="true">${i + 1}º</span>
-      </div>
-      <h3>${c.nome}</h3>
-      <p>${c.desc}</p>
-      <div class="cat-slide-stats" data-cat-stats="${c.nome}">${categoryStatsText(c.nome)}</div>
-      <div class="cat-slide-actions">
-        <button type="button" class="btn btn-primary" data-cat-report="${c.nome}">Reportar</button>
-        <button type="button" class="link-btn" data-cat-view="${c.nome}">Ver relatos →</button>
-      </div>
-    </div>`;
+      </span>
+      <span class="cat-card-name">${c.nome}</span>
+      <span class="cat-card-desc">${c.desc}</span>
+      <span class="cat-slide-stats" data-cat-stats="${c.nome}">${categoryStatsHtml(c.nome)}</span>
+    </button>`;
 
   let html = '';
   for(let p = 0; p < pages; p++){
@@ -239,13 +239,6 @@ function renderCategories(){
   track.innerHTML = html;
   track.scrollLeft = 0;
 
-  track.querySelectorAll('[data-cat-report]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const select = document.getElementById('categoria');
-      if(select) select.value = btn.dataset.catReport;
-      document.getElementById('reportar').scrollIntoView({ behavior: 'smooth' });
-    });
-  });
   track.querySelectorAll('[data-cat-view]').forEach(btn => {
     btn.addEventListener('click', () => {
       categoryFilter = btn.dataset.catView;
@@ -254,6 +247,12 @@ function renderCategories(){
       document.getElementById('ocorrencias').scrollIntoView({ behavior: 'smooth' });
     });
   });
+
+  const reportLink = document.getElementById('catReportLink');
+  if(reportLink && !reportLink.dataset.bound){
+    reportLink.dataset.bound = '1';
+    reportLink.addEventListener('click', () => document.getElementById('reportar').scrollIntoView({ behavior: 'smooth' }));
+  }
 
   const dotsWrap = document.getElementById('catDots');
   dotsWrap.innerHTML = '';
@@ -278,7 +277,7 @@ function renderCategories(){
     });
     window.addEventListener('resize', () => catGoTo(catCurrent(), true));
     const onChange = () => renderCategories();
-    [catNarrow, catWide].forEach(mq => { if(mq.addEventListener) mq.addEventListener('change', onChange); });
+    if(catNarrow.addEventListener) catNarrow.addEventListener('change', onChange);
   }
   catUpdate();
 }
