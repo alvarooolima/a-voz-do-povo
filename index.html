@@ -263,14 +263,22 @@
     </div>
   </section>
 
-  <!-- OCORRÊNCIAS + MAPA (dois painéis lado a lado) -->
+  <!-- OCORRÊNCIAS + MAPA (um único card) -->
   <section class="section" id="ocorrencias-mapa">
     <div class="wrap duo-wrap">
-      <div class="duo-grid">
+      <div class="balloon-panel unified-panel" id="ocorrencias">
 
-        <div class="balloon-panel duo-panel" id="ocorrencias">
-          <div class="cat-carousel-head">
+        <div class="unified-head">
+          <div>
             <h2>Ocorrências da cidade</h2>
+            <p class="unified-sub">Veja onde estão os problemas da sua região</p>
+          </div>
+          <div class="unified-tools">
+            <ul class="map-legend" aria-label="Legenda dos pinos">
+              <li><span class="dot dot-analise"></span>Em análise</li>
+              <li><span class="dot dot-andamento"></span>Em andamento</li>
+              <li><span class="dot dot-resolvido"></span>Resolvido</li>
+            </ul>
             <div class="filter-dropdown" id="filterDropdown">
               <button type="button" class="filter-trigger" id="filterTrigger">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M7 12h10M10.5 18h3" stroke="#0C3B79" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -287,36 +295,30 @@
               </div>
             </div>
           </div>
-
-          <p class="search-indicator" id="searchIndicator" hidden>
-            Resultados para "<span id="searchIndicatorTerm"></span>"
-            <button type="button" id="searchIndicatorClear">✕ limpar busca</button>
-          </p>
-
-          <div class="feed-scroll">
-            <div class="feed-grid" id="feedGrid"><!-- injetado via JS --></div>
-            <p class="feed-empty" id="feedEmpty" hidden>Nenhuma ocorrência encontrada para esse filtro.</p>
-          </div>
         </div>
 
-        <div class="balloon-panel duo-panel" id="mapa">
-          <div class="cat-carousel-head">
-            <h2>Veja onde estão os problemas da sua região</h2>
+        <p class="search-indicator" id="searchIndicator" hidden>
+          Resultados para "<span id="searchIndicatorTerm"></span>"
+          <button type="button" id="searchIndicatorClear">✕ limpar busca</button>
+        </p>
+
+        <div class="unified-body">
+          <div class="unified-feed">
+            <div class="feed-scroll">
+              <div class="feed-grid" id="feedGrid"><!-- injetado via JS --></div>
+              <p class="feed-empty" id="feedEmpty" hidden>Nenhuma ocorrência encontrada para esse filtro.</p>
+            </div>
           </div>
-          <div class="map-toolbar">
-            <ul class="map-legend" aria-label="Legenda dos pinos">
-              <li><span class="dot dot-analise"></span>Em análise</li>
-              <li><span class="dot dot-andamento"></span>Em andamento</li>
-              <li><span class="dot dot-resolvido"></span>Resolvido</li>
-            </ul>
+
+          <div class="unified-map" id="mapa">
             <div class="map-actions">
               <a class="btn btn-outline" id="mapGmaps" href="https://www.google.com/maps" target="_blank" rel="noopener">Google Maps ↗</a>
               <button type="button" class="btn btn-primary" id="mapLocate">Usar minha localização</button>
             </div>
-          </div>
-          <div class="map-stack">
-            <div class="map-canvas" id="occMap" role="application" aria-label="Mapa das ocorrências. As mesmas informações estão na lista abaixo do mapa."></div>
-            <aside class="map-side" id="mapSide" aria-live="polite"></aside>
+            <div class="map-stack">
+              <div class="map-canvas" id="occMap" role="application" aria-label="Mapa das ocorrências. As mesmas informações estão na lista abaixo do mapa."></div>
+              <aside class="map-side" id="mapSide" aria-live="polite"></aside>
+            </div>
           </div>
         </div>
 
