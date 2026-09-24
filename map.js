@@ -2,12 +2,12 @@
 // Os relatos precisam de lat/lng para aparecer no mapa; os relatos de demonstração
 // ganham coordenadas abaixo. Troque CITY pelo centro da sua cidade.
 (function(){
-  const CITY = { lat: -15.7801, lng: -47.9292, zoom: 14 };
+  const CITY = { lat: -23.6861, lng: -46.6228, zoom: 14 }; // Diadema/SP
   const RADIUS = 400; // metros
   const SEED_COORDS = {
-    'seed-1': { lat: -15.7842, lng: -47.9218 },
-    'seed-2': { lat: -15.7795, lng: -47.9330 },
-    'seed-3': { lat: -15.7826, lng: -47.9235 }
+    'seed-1': { lat: -23.6890, lng: -46.6195 },
+    'seed-2': { lat: -23.6835, lng: -46.6270 },
+    'seed-3': { lat: -23.6873, lng: -46.6210 }
   };
   const COLORS = { 'Em análise': '#B4790A', 'Em andamento': '#0C3B79', 'Resolvido': '#1D8A5A' };
 
