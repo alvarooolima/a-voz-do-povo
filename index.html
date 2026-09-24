@@ -105,7 +105,7 @@
 
   <!-- CATEGORIAS + COMO FUNCIONA (dois painéis lado a lado) -->
   <section class="section" id="categorias">
-    <div class="wrap duo-grid">
+    <div class="wrap duo-wrap duo-grid">
 
       <div class="balloon-panel duo-panel">
         <div class="cat-carousel" id="catCarousel" aria-roledescription="carrossel" aria-label="Tipos de problema que você pode relatar">
@@ -133,30 +133,47 @@
         <div class="cat-carousel-head">
           <h2>Como funciona</h2>
         </div>
-        <ol class="duo-steps">
-          <li>
-            <span class="duo-step-n" aria-hidden="true">1</span>
-            <div>
-              <h3>Registre o problema</h3>
-              <p>Tire uma foto, descreva e informe o local. Leva menos de 1 minuto.</p>
-            </div>
+        <ol class="cat-slide-grid steps-grid">
+          <li class="cat-card2 step-card">
+            <span class="cat-slide-top">
+              <span class="cat-slide-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+              <span class="cat-rank" aria-hidden="true">1º</span>
+            </span>
+            <span class="cat-card-name">Registre o problema</span>
+            <span class="cat-card-desc">Tire uma foto, descreva e informe o local.</span>
+            <span class="cat-slide-stats">
+              <span class="cat-stat-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2.2"/><path d="M12 8v4l2.5 1.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+              <span class="cat-stat-text"><strong>Até 1 minuto</strong><span>sem conta</span></span>
+            </span>
           </li>
-          <li>
-            <span class="duo-step-n" aria-hidden="true">2</span>
-            <div>
-              <h3>A equipe responsável avalia</h3>
-              <p>A equipe analisa e envia ao setor certo da prefeitura.</p>
-            </div>
+          <li class="cat-card2 step-card">
+            <span class="cat-slide-top">
+              <span class="cat-slide-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 21h16M5 21V10l7-5 7 5v11M9 21v-6h6v6" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+              <span class="cat-rank" aria-hidden="true">2º</span>
+            </span>
+            <span class="cat-card-name">A prefeitura responde</span>
+            <span class="cat-card-desc">A equipe analisa e envia ao setor certo.</span>
+            <span class="cat-slide-stats">
+              <span class="cat-stat-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v10H9l-4 4v-4H4V6Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span>
+              <span class="cat-stat-text"><strong>Resposta</strong><span>visível a todos</span></span>
+            </span>
           </li>
-          <li>
-            <span class="duo-step-n" aria-hidden="true">3</span>
-            <div>
-              <h3>Você acompanha o status</h3>
-              <p>Veja o status mudar até "resolvido", visível para todos.</p>
-            </div>
+          <li class="cat-card2 step-card">
+            <span class="cat-slide-top">
+              <span class="cat-slide-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.8" stroke="currentColor" stroke-width="1.7"/></svg></span>
+              <span class="cat-rank" aria-hidden="true">3º</span>
+            </span>
+            <span class="cat-card-name">Você acompanha</span>
+            <span class="cat-card-desc">Veja o status mudar até ficar resolvido.</span>
+            <span class="cat-slide-stats">
+              <span class="cat-stat-badge is-ok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="cat-stat-text"><strong>Status ao vivo</strong><span>e você dá nota</span></span>
+            </span>
           </li>
         </ol>
-        <button type="button" class="duo-link" data-open-intro>Entenda o site em 1 minuto <span aria-hidden="true">→</span></button>
+        <div class="cat-foot cat-foot-end">
+          <button type="button" class="duo-link" data-open-intro>Entenda o site em 1 minuto <span aria-hidden="true">→</span></button>
+        </div>
       </div>
 
     </div>
