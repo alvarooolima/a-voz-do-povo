@@ -1,8 +1,8 @@
 /* ============ TOKENS ============ */
 :root{
-  --royal: #1557A6;
-  --royal-dark: #0F4280;
-  --royal-deep: #0A1F66;
+  --royal: #0C3B79;
+  --royal-dark: #082C5C;
+  --royal-deep: #071F45;
   --royal-light: #EEF2FF;
   --royal-tint: #F5F7FF;
   --white: #FFFFFF;
@@ -62,7 +62,7 @@ button{font-family:inherit;}
   transition:transform .12s ease, background .15s ease, border-color .15s ease;
 }
 .btn:active{transform:translateY(1px);}
-.btn-primary{background:var(--royal); color:var(--white);}
+.btn-primary{background:linear-gradient(135deg,#0F4C96 0%,var(--royal) 45%,var(--royal-dark) 100%); color:var(--white);}
 .btn-primary:hover{background:var(--royal-dark);}
 .btn-outline{background:transparent; color:var(--royal); border-color:var(--royal);}
 .btn-outline:hover{background:var(--royal-light);}
@@ -159,12 +159,12 @@ button{font-family:inherit;}
   text-align:left; cursor:pointer; font-family:inherit;
   transition:border-color .12s ease, box-shadow .12s ease;
 }
-.hero-tool:hover{border-color:var(--royal); box-shadow:0 4px 14px rgba(21,87,166,.12);}
+.hero-tool:hover{border-color:var(--royal); box-shadow:0 4px 14px rgba(12,59,121,.12);}
 .hero-tool-icon{
   width:34px; height:34px; border-radius:9px; background:var(--royal-light);
   display:flex; align-items:center; justify-content:center; flex:none;
 }
-.hero-tool-primary{background:var(--royal); border-color:var(--royal); color:var(--white);}
+.hero-tool-primary{background:linear-gradient(135deg,#0F4C96 0%,var(--royal) 45%,var(--royal-dark) 100%); border-color:var(--royal); color:var(--white);}
 .hero-tool-primary:hover{background:var(--royal-dark); border-color:var(--royal-dark);}
 .hero-tool-primary .hero-tool-icon{background:rgba(255,255,255,.18);}
 

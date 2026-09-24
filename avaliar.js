@@ -263,7 +263,7 @@ function renderResolvedGrid(){
       <div class="report-photo">
         ${r.foto
           ? `<img src="${r.foto}" alt="Foto do problema resolvido: ${escapeHtmlLocal(r.titulo)}">`
-          : `<svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M4 17.5 8.5 12l3 3.5L15 11l5 6.5" stroke="#1557A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="8" r="2" stroke="#1557A6" stroke-width="1.5"/><rect x="3" y="4" width="18" height="16" rx="2" stroke="#1557A6" stroke-width="1.5"/></svg>`
+          : `<svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M4 17.5 8.5 12l3 3.5L15 11l5 6.5" stroke="#0C3B79" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="8" r="2" stroke="#0C3B79" stroke-width="1.5"/><rect x="3" y="4" width="18" height="16" rx="2" stroke="#0C3B79" stroke-width="1.5"/></svg>`
         }
       </div>
       <div class="report-body">
