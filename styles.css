@@ -182,7 +182,7 @@ button{font-family:inherit;}
 .section h2{font-size:clamp(1.5rem, 2.4vw, 2rem); max-width:22ch; color:var(--ink);}
 
 /* categorias: carrossel, um card por slide */
-.cat-carousel{max-width:900px; margin:0 auto;}
+.cat-carousel{max-width:1100px; margin:0 auto;}
 .cat-carousel-head{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px;}
 .cat-carousel-head h3{font-size:1.25rem; margin:0;}
 .cat-arrows{display:flex; gap:10px;}
@@ -198,29 +198,30 @@ button{font-family:inherit;}
 }
 .cat-track::-webkit-scrollbar{display:none;}
 .cat-track:focus-visible{outline:3px solid var(--royal); outline-offset:3px;}
-.cat-slide{flex:0 0 100%; scroll-snap-align:start; padding:2px;}
-.cat-slide-card{
-  background:var(--white); border-radius:var(--radius-l); padding:32px;
-  box-shadow:var(--shadow-card); min-height:300px;
-  display:flex; flex-direction:column; gap:10px;
+.cat-slide{flex:0 0 100%; scroll-snap-align:start; padding:4px;}
+.cat-slide-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:16px;}
+.cat-card2{
+  background:var(--white); border-radius:var(--radius-m); padding:20px;
+  box-shadow:var(--shadow-card); display:flex; flex-direction:column; gap:8px; min-height:290px;
 }
-.cat-slide-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;}
+.cat-slide-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;}
 .cat-slide-icon{
-  width:76px; height:76px; border-radius:20px; background:var(--royal-light); color:var(--royal);
+  width:56px; height:56px; border-radius:16px; background:var(--royal-light); color:var(--royal);
   display:flex; align-items:center; justify-content:center;
 }
 .cat-rank{
-  width:44px; height:44px; border-radius:50%; background:var(--royal-light); color:var(--royal-dark);
-  display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1rem;
+  width:38px; height:38px; border-radius:50%; background:var(--royal-light); color:var(--royal-dark);
+  display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.92rem;
 }
-.cat-slide-card h3{font-size:1.6rem; margin:0;}
-.cat-slide-card p{font-size:1.08rem; color:var(--muted); margin:0; max-width:40em;}
+.cat-card2 h3{font-size:1.2rem; margin:0;}
+.cat-card2 p{font-size:.95rem; line-height:1.5; color:var(--muted); margin:0;}
 .cat-slide-stats{
-  margin-top:auto; padding:14px 18px; border-radius:var(--radius-m);
-  background:var(--royal-tint); color:var(--ink); font-weight:700; font-size:.98rem; text-align:center;
+  margin-top:auto; padding:12px 14px; border-radius:var(--radius-s);
+  background:var(--royal-tint); color:var(--ink); font-weight:700; font-size:.9rem; text-align:center;
 }
-.cat-slide-actions{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-top:8px;}
-.cat-slide-actions .link-btn{font-size:1rem;}
+.cat-slide-actions{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:6px;}
+.cat-slide-actions .btn{padding:9px 18px; font-size:.88rem;}
+.cat-slide-actions .link-btn{font-size:.9rem;}
 .cat-foot{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:16px;}
 .cat-counter{margin:0; font-size:.95rem; font-weight:700; color:var(--ink);}
 .cat-dots{display:flex; gap:10px;}
@@ -759,11 +760,6 @@ button{font-family:inherit;}
   }
 }
 @media (max-width: 640px){
-  .cat-slide-card{padding:22px; min-height:0;}
-  .cat-slide-card h3{font-size:1.35rem;}
-  .cat-slide-actions{flex-direction:column; align-items:stretch;}
-  .cat-slide-actions .btn{width:100%;}
-  .cat-slide-actions .link-btn{text-align:center;}
   .feed-grid{grid-template-columns:1fr;}
   .field-row{grid-template-columns:1fr;}
   .perf-grid{grid-template-columns:repeat(2, 1fr);}
@@ -771,4 +767,15 @@ button{font-family:inherit;}
   .hero-search input{width:100%; order:1;}
   .hero-search svg{order:0;}
   .hero-search .btn{order:2; width:100%; margin-top:4px;}
+}
+
+@media (max-width: 760px){
+  .cat-slide-grid{grid-template-columns:1fr;}
+  .cat-card2{padding:22px; min-height:0;}
+  .cat-card2 h3{font-size:1.4rem;}
+  .cat-card2 p{font-size:1.02rem;}
+  .cat-slide-icon{width:64px; height:64px;}
+  .cat-slide-actions{flex-direction:column; align-items:stretch;}
+  .cat-slide-actions .btn{width:100%; padding:13px 18px; font-size:1rem;}
+  .cat-slide-actions .link-btn{text-align:center; font-size:1rem;}
 }

@@ -203,27 +203,40 @@ function updateCategoryStats(){
   });
 }
 
+const catMobile = window.matchMedia('(max-width: 760px)');
+let catBound = false;
+
 function renderCategories(){
   const track = document.getElementById('catTrack');
   if(!track) return;
-  const total = CATEGORIES.length;
-  track.innerHTML = CATEGORIES.map((c, i) => `
-    <article class="cat-slide" role="group" aria-roledescription="slide" aria-label="${c.nome}, ${i + 1} de ${total}">
-      <div class="cat-slide-card">
-        <div class="cat-slide-top">
-          <span class="cat-slide-icon"><svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg></span>
-          <span class="cat-rank" aria-hidden="true">${i + 1}º</span>
-        </div>
-        <h3>${c.nome}</h3>
-        <p>${c.desc}</p>
-        <div class="cat-slide-stats" data-cat-stats="${c.nome}">${categoryStatsText(c.nome)}</div>
-        <div class="cat-slide-actions">
-          <button type="button" class="btn btn-primary" data-cat-report="${c.nome}">Reportar este problema</button>
-          <button type="button" class="link-btn" data-cat-view="${c.nome}">Ver relatos →</button>
-        </div>
+  const perSlide = catMobile.matches ? 1 : 3;
+  const pages = Math.ceil(CATEGORIES.length / perSlide);
+
+  const card = (c, i) => `
+    <div class="cat-card2">
+      <div class="cat-slide-top">
+        <span class="cat-slide-icon"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg></span>
+        <span class="cat-rank" aria-hidden="true">${i + 1}º</span>
       </div>
-    </article>
-  `).join('');
+      <h3>${c.nome}</h3>
+      <p>${c.desc}</p>
+      <div class="cat-slide-stats" data-cat-stats="${c.nome}">${categoryStatsText(c.nome)}</div>
+      <div class="cat-slide-actions">
+        <button type="button" class="btn btn-primary" data-cat-report="${c.nome}">Reportar</button>
+        <button type="button" class="link-btn" data-cat-view="${c.nome}">Ver relatos →</button>
+      </div>
+    </div>`;
+
+  let html = '';
+  for(let p = 0; p < pages; p++){
+    const from = p * perSlide;
+    const group = CATEGORIES.slice(from, from + perSlide);
+    html += `<article class="cat-slide" role="group" aria-roledescription="slide" aria-label="Página ${p + 1} de ${pages}">
+      <div class="cat-slide-grid">${group.map((c, k) => card(c, from + k)).join('')}</div>
+    </article>`;
+  }
+  track.innerHTML = html;
+  track.scrollLeft = 0;
 
   track.querySelectorAll('[data-cat-report]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -241,54 +254,55 @@ function renderCategories(){
     });
   });
 
-  setupCategoryCarousel(track, total);
-}
-
-function setupCategoryCarousel(track, total){
-  const prev = document.getElementById('catPrev');
-  const next = document.getElementById('catNext');
-  const counter = document.getElementById('catCounter');
   const dotsWrap = document.getElementById('catDots');
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
   dotsWrap.innerHTML = '';
-  for(let i = 0; i < total; i++){
+  for(let i = 0; i < pages; i++){
     const dot = document.createElement('button');
     dot.type = 'button';
     dot.className = 'cat-dot';
-    dot.setAttribute('aria-label', 'Categoria ' + (i + 1) + ' de ' + total);
-    dot.addEventListener('click', () => goTo(i));
+    dot.setAttribute('aria-label', 'Página ' + (i + 1) + ' de ' + pages);
+    dot.addEventListener('click', () => catGoTo(i));
     dotsWrap.appendChild(dot);
   }
-  const dots = [...dotsWrap.children];
 
-  function current(){
-    if(!track.clientWidth) return 0;
-    return Math.max(0, Math.min(total - 1, Math.round(track.scrollLeft / track.clientWidth)));
-  }
-  function goTo(i){
-    track.scrollTo({ left: Math.max(0, Math.min(total - 1, i)) * track.clientWidth, behavior: reduce ? 'auto' : 'smooth' });
-  }
-  function update(){
-    const i = current();
-    counter.textContent = 'Categoria ' + (i + 1) + ' de ' + total;
-    dots.forEach((d, n) => {
-      d.classList.toggle('is-current', n === i);
-      if(n === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+  if(!catBound){
+    catBound = true;
+    const track2 = track;
+    document.getElementById('catPrev').addEventListener('click', () => catGoTo(catCurrent() - 1));
+    document.getElementById('catNext').addEventListener('click', () => catGoTo(catCurrent() + 1));
+    track2.addEventListener('scroll', catUpdate, { passive: true });
+    track2.addEventListener('keydown', (e) => {
+      if(e.key === 'ArrowRight'){ e.preventDefault(); catGoTo(catCurrent() + 1); }
+      if(e.key === 'ArrowLeft'){ e.preventDefault(); catGoTo(catCurrent() - 1); }
     });
-    prev.disabled = i === 0;
-    next.disabled = i === total - 1;
+    window.addEventListener('resize', () => catGoTo(catCurrent(), true));
+    const onChange = () => renderCategories();
+    if(catMobile.addEventListener) catMobile.addEventListener('change', onChange);
   }
+  catUpdate();
+}
 
-  track.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', () => goTo(current()));
-  prev.addEventListener('click', () => goTo(current() - 1));
-  next.addEventListener('click', () => goTo(current() + 1));
-  track.addEventListener('keydown', (e) => {
-    if(e.key === 'ArrowRight'){ e.preventDefault(); goTo(current() + 1); }
-    if(e.key === 'ArrowLeft'){ e.preventDefault(); goTo(current() - 1); }
+function catPages(){ return document.querySelectorAll('#catTrack .cat-slide').length; }
+function catCurrent(){
+  const track = document.getElementById('catTrack');
+  if(!track || !track.clientWidth) return 0;
+  return Math.max(0, Math.min(catPages() - 1, Math.round(track.scrollLeft / track.clientWidth)));
+}
+function catGoTo(i, instant){
+  const track = document.getElementById('catTrack');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  track.scrollTo({ left: Math.max(0, Math.min(catPages() - 1, i)) * track.clientWidth, behavior: (reduce || instant) ? 'auto' : 'smooth' });
+}
+function catUpdate(){
+  const i = catCurrent();
+  const pages = catPages();
+  document.getElementById('catCounter').textContent = 'Página ' + (i + 1) + ' de ' + pages;
+  document.querySelectorAll('#catDots .cat-dot').forEach((d, n) => {
+    d.classList.toggle('is-current', n === i);
+    if(n === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
   });
-  update();
+  document.getElementById('catPrev').disabled = i === 0;
+  document.getElementById('catNext').disabled = i >= pages - 1;
 }
 
 // ---------- Feed ----------
