@@ -190,22 +190,111 @@ function showToast(msg){
   showToast._t = setTimeout(()=> toast.classList.remove('is-visible'), 2800);
 }
 
-// ---------- Categorias ----------
+// ---------- Categorias (carrossel: um card por slide) ----------
+function categoryStatsText(nome){
+  const doCat = loadReports().filter(r => r.categoria === nome);
+  if(doCat.length === 0) return 'Nenhum relato ainda';
+  const resolvidos = doCat.filter(r => r.status === 'Resolvido').length;
+  return doCat.length + (doCat.length === 1 ? ' relato' : ' relatos') + ' · ' + resolvidos + (resolvidos === 1 ? ' resolvido' : ' resolvidos');
+}
+function updateCategoryStats(){
+  document.querySelectorAll('[data-cat-stats]').forEach(el => {
+    el.textContent = categoryStatsText(el.dataset.catStats);
+  });
+}
+
 function renderCategories(){
-  const grid = document.getElementById('catGrid');
-  if(!grid) return;
-  grid.innerHTML = CATEGORIES.map(c => `
-    <div class="cat-card">
-      <div class="cat-icon"><svg width="22" height="22" viewBox="0 0 24 24">${c.icon}</svg></div>
-      <h3>${c.nome}</h3>
-      <p>${c.desc}</p>
-    </div>
+  const track = document.getElementById('catTrack');
+  if(!track) return;
+  const total = CATEGORIES.length;
+  track.innerHTML = CATEGORIES.map((c, i) => `
+    <article class="cat-slide" role="group" aria-roledescription="slide" aria-label="${c.nome}, ${i + 1} de ${total}">
+      <div class="cat-slide-card">
+        <div class="cat-slide-top">
+          <span class="cat-slide-icon"><svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg></span>
+          <span class="cat-rank" aria-hidden="true">${i + 1}º</span>
+        </div>
+        <h3>${c.nome}</h3>
+        <p>${c.desc}</p>
+        <div class="cat-slide-stats" data-cat-stats="${c.nome}">${categoryStatsText(c.nome)}</div>
+        <div class="cat-slide-actions">
+          <button type="button" class="btn btn-primary" data-cat-report="${c.nome}">Reportar este problema</button>
+          <button type="button" class="link-btn" data-cat-view="${c.nome}">Ver relatos →</button>
+        </div>
+      </div>
+    </article>
   `).join('');
+
+  track.querySelectorAll('[data-cat-report]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const select = document.getElementById('categoria');
+      if(select) select.value = btn.dataset.catReport;
+      document.getElementById('reportar').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+  track.querySelectorAll('[data-cat-view]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      categoryFilter = btn.dataset.catView;
+      searchQuery = '';
+      renderFeed();
+      document.getElementById('ocorrencias').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  setupCategoryCarousel(track, total);
+}
+
+function setupCategoryCarousel(track, total){
+  const prev = document.getElementById('catPrev');
+  const next = document.getElementById('catNext');
+  const counter = document.getElementById('catCounter');
+  const dotsWrap = document.getElementById('catDots');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  dotsWrap.innerHTML = '';
+  for(let i = 0; i < total; i++){
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'cat-dot';
+    dot.setAttribute('aria-label', 'Categoria ' + (i + 1) + ' de ' + total);
+    dot.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(dot);
+  }
+  const dots = [...dotsWrap.children];
+
+  function current(){
+    if(!track.clientWidth) return 0;
+    return Math.max(0, Math.min(total - 1, Math.round(track.scrollLeft / track.clientWidth)));
+  }
+  function goTo(i){
+    track.scrollTo({ left: Math.max(0, Math.min(total - 1, i)) * track.clientWidth, behavior: reduce ? 'auto' : 'smooth' });
+  }
+  function update(){
+    const i = current();
+    counter.textContent = 'Categoria ' + (i + 1) + ' de ' + total;
+    dots.forEach((d, n) => {
+      d.classList.toggle('is-current', n === i);
+      if(n === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+    });
+    prev.disabled = i === 0;
+    next.disabled = i === total - 1;
+  }
+
+  track.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', () => goTo(current()));
+  prev.addEventListener('click', () => goTo(current() - 1));
+  next.addEventListener('click', () => goTo(current() + 1));
+  track.addEventListener('keydown', (e) => {
+    if(e.key === 'ArrowRight'){ e.preventDefault(); goTo(current() + 1); }
+    if(e.key === 'ArrowLeft'){ e.preventDefault(); goTo(current() - 1); }
+  });
+  update();
 }
 
 // ---------- Feed ----------
 let currentFilter = 'todos';
 let searchQuery = '';
+let categoryFilter = '';
 const openComments = new Set();
 
 function renderStats(reports){
@@ -236,6 +325,8 @@ function renderFeed(){
         ? reports.filter(r => !r.resposta)
         : reports.filter(r => r.status === currentFilter);
 
+  if(categoryFilter) filtered = filtered.filter(r => r.categoria === categoryFilter);
+
   const searchIndicator = document.getElementById('searchIndicator');
   if(searchQuery){
     const q = searchQuery.toLowerCase();
@@ -245,20 +336,24 @@ function renderFeed(){
       r.categoria.toLowerCase().includes(q) ||
       r.comentario.toLowerCase().includes(q)
     );
-    if(searchIndicator){
-      document.getElementById('searchIndicatorTerm').textContent = searchQuery;
-      searchIndicator.hidden = false;
-    }
-  }else if(searchIndicator){
-    searchIndicator.hidden = true;
   }
+  const activeTerm = searchQuery || categoryFilter;
+  if(searchIndicator){
+    if(activeTerm){
+      document.getElementById('searchIndicatorTerm').textContent = activeTerm;
+      searchIndicator.hidden = false;
+    }else{
+      searchIndicator.hidden = true;
+    }
+  }
+  updateCategoryStats();
 
   if(filtered.length === 0){
     grid.innerHTML = '';
     if(empty){
       empty.hidden = false;
-      empty.textContent = searchQuery
-        ? `Nenhuma ocorrência encontrada para "${searchQuery}".`
+      empty.textContent = activeTerm
+        ? `Nenhuma ocorrência encontrada para "${activeTerm}".`
         : 'Nenhuma ocorrência encontrada para esse filtro.';
     }
     return;
@@ -557,6 +652,7 @@ function setupHeroSearch(){
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     searchQuery = document.getElementById('heroSearchInput').value.trim();
+    categoryFilter = '';
     renderFeed();
     document.getElementById('ocorrencias').scrollIntoView({ behavior: 'smooth' });
   });
@@ -564,6 +660,7 @@ function setupHeroSearch(){
   if(clearBtn){
     clearBtn.addEventListener('click', () => {
       searchQuery = '';
+      categoryFilter = '';
       document.getElementById('heroSearchInput').value = '';
       renderFeed();
     });
@@ -618,6 +715,7 @@ function setupHeaderScrollSearch(){
   compactSearch.addEventListener('submit', (e) => {
     e.preventDefault();
     searchQuery = compactInput.value.trim();
+    categoryFilter = '';
     renderFeed();
     document.getElementById('ocorrencias').scrollIntoView({ behavior: 'smooth' });
   });

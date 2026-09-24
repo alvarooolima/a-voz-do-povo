@@ -52,6 +52,9 @@ Na primeira visita, `index.html` abre uma apresentação em tela cheia, em 4 "p�
 
 Escolhas de UX/acessibilidade: uma ideia por página (menos carga cognitiva), linguagem simples e frases curtas, textos grandes e alto contraste, botões grandes (mín. 56px) com "Voltar/Próximo" sempre no mesmo lugar, indicador "Página X de 4" mais pontos de progresso, passos ligados por uma linha (gestalt: continuidade/proximidade), botão principal destacado só na última página (poucas escolhas), navegação por teclado (setas, Esc), gesto de deslizar no celular, foco preso no diálogo e animação desativada para quem prefere menos movimento (`prefers-reduced-motion`). O texto e as ilustrações ficam em `index.html`; a lógica em `intro.js`.
 
+## Categorias em carrossel
+A seção "O que você pode relatar" virou um carrossel com **um card por slide**, no estilo do painel de "melhores empresas" do Reclame Aqui: ícone da categoria, selo de posição (1º, 2º…), descrição e uma faixa de status com o número de relatos e resolvidos daquela categoria (calculado dos relatos reais). Navega por setas, pontos, teclado (← →) ou deslizando no celular (scroll-snap nativo, sem rotação automática). Cada card tem "Reportar este problema" (leva ao formulário já com a categoria escolhida) e "Ver relatos →" (filtra o feed por aquela categoria). As categorias vêm do array `CATEGORIES` em `main.js`.
+
 ## Feed com curtidas, comentários e filtro
 Cada relato no feed de ocorrências agora funciona como um mini post de rede social:
 - **👍 Curtir** — substitui o antigo botão de apoio (▲); clique novamente para descurtir. Um clique por navegador, como antes.

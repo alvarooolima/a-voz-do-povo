@@ -181,24 +181,56 @@ button{font-family:inherit;}
 .section{padding:76px 0;}
 .section h2{font-size:clamp(1.5rem, 2.4vw, 2rem); max-width:22ch; color:var(--ink);}
 
-/* categorias */
-.cat-grid{
-  display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-top:32px;
+/* categorias: carrossel, um card por slide */
+.cat-carousel{max-width:900px; margin:0 auto;}
+.cat-carousel-head{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px;}
+.cat-carousel-head h3{font-size:1.25rem; margin:0;}
+.cat-arrows{display:flex; gap:10px;}
+.cat-arrow{
+  width:46px; height:46px; border-radius:50%; border:1.5px solid var(--line); background:var(--white);
+  color:var(--royal); display:flex; align-items:center; justify-content:center; cursor:pointer; padding:0;
 }
-.cat-card{
-  background:var(--white);
-  border:1px solid var(--line);
-  border-radius:var(--radius-m);
-  padding:22px;
+.cat-arrow:hover:not(:disabled){background:var(--royal); color:var(--white); border-color:var(--royal);}
+.cat-arrow:disabled{opacity:.4; cursor:default;}
+.cat-track{
+  display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none;
+  border-radius:var(--radius-l);
+}
+.cat-track::-webkit-scrollbar{display:none;}
+.cat-track:focus-visible{outline:3px solid var(--royal); outline-offset:3px;}
+.cat-slide{flex:0 0 100%; scroll-snap-align:start; padding:2px;}
+.cat-slide-card{
+  background:var(--white); border-radius:var(--radius-l); padding:32px;
+  box-shadow:var(--shadow-card); min-height:300px;
   display:flex; flex-direction:column; gap:10px;
 }
-.cat-icon{
-  width:44px; height:44px; border-radius:12px;
-  background:var(--royal-light);
+.cat-slide-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;}
+.cat-slide-icon{
+  width:76px; height:76px; border-radius:20px; background:var(--royal-light); color:var(--royal);
   display:flex; align-items:center; justify-content:center;
 }
-.cat-card h3{font-family:var(--font-body); font-size:1.02rem; font-weight:700; margin:0;}
-.cat-card p{font-size:.9rem; color:var(--muted); margin:0;}
+.cat-rank{
+  width:44px; height:44px; border-radius:50%; background:var(--royal-light); color:var(--royal-dark);
+  display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1rem;
+}
+.cat-slide-card h3{font-size:1.6rem; margin:0;}
+.cat-slide-card p{font-size:1.08rem; color:var(--muted); margin:0; max-width:40em;}
+.cat-slide-stats{
+  margin-top:auto; padding:14px 18px; border-radius:var(--radius-m);
+  background:var(--royal-tint); color:var(--ink); font-weight:700; font-size:.98rem; text-align:center;
+}
+.cat-slide-actions{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-top:8px;}
+.cat-slide-actions .link-btn{font-size:1rem;}
+.cat-foot{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:16px;}
+.cat-counter{margin:0; font-size:.95rem; font-weight:700; color:var(--ink);}
+.cat-dots{display:flex; gap:10px;}
+.cat-dot{
+  width:12px; height:12px; padding:0; border:0; border-radius:999px; cursor:pointer;
+  background:#C5D2E6; position:relative; transition:width .2s ease, background .2s ease;
+}
+.cat-dot::before{content:""; position:absolute; inset:-10px;}
+.cat-dot.is-current{width:34px; background:var(--royal);}
+@media (prefers-reduced-motion: reduce){ .cat-dot{transition:none;} }
 
 /* steps */
 .steps{
@@ -686,7 +718,6 @@ button{font-family:inherit;}
   .hero-art{order:-1; max-width:340px; margin:0 auto;}
   .report-wrap{grid-template-columns:1fr;}
   .report-form{grid-template-columns:1fr;}
-  .cat-grid{grid-template-columns:repeat(2,1fr);}
   .steps{grid-template-columns:1fr;}
   .feed-grid{grid-template-columns:repeat(2,1fr);}
   .auth-card{padding:28px 22px;}
@@ -728,7 +759,11 @@ button{font-family:inherit;}
   }
 }
 @media (max-width: 640px){
-  .cat-grid{grid-template-columns:1fr;}
+  .cat-slide-card{padding:22px; min-height:0;}
+  .cat-slide-card h3{font-size:1.35rem;}
+  .cat-slide-actions{flex-direction:column; align-items:stretch;}
+  .cat-slide-actions .btn{width:100%;}
+  .cat-slide-actions .link-btn{text-align:center;}
   .feed-grid{grid-template-columns:1fr;}
   .field-row{grid-template-columns:1fr;}
   .perf-grid{grid-template-columns:repeat(2, 1fr);}
