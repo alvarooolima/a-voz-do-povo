@@ -47,6 +47,11 @@ Qualquer visitante pode dar uma nota de 1 a 5 estrelas com comentário opcional;
 ## Hero com busca e ferramentas (inspirado no Reclame Aqui)
 A seção inicial ganhou a mesma estrutura da home do Reclame Aqui — busca em destaque + linha de "ferramentas para você" — adaptada à nossa identidade: campo de busca que filtra as ocorrências por rua, bairro, categoria ou palavra-chave (rola até o feed e mostra um indicador "Resultados para..." com opção de limpar), e 4 atalhos (Reportar problema, Ver ocorrências, Avalie o prefeito, Painel da prefeitura).
 
+## Apresentação em páginas (primeira visita)
+Na primeira visita, `index.html` abre uma apresentação em tela cheia, em 4 "páginas" (estilo livro), para qualquer pessoa entender o site sem rolar a tela: (1) o que é — um canal direto entre a população e a prefeitura; (2) como funciona em 3 passos; (3) como todos participam (comentar, avaliar o prefeito, ver o histórico de partidos); (4) chamada para começar (reportar, ver relatos ou só explorar). Fica salva em `localStorage` (`avozdopovo_intro_visto`) e não reabre sozinha; pode ser revista pelo botão "Primeira vez aqui? Entenda o site em 1 minuto" no hero, pelo item "Entenda o site" do menu "Para você" (em qualquer página, via `index.html?intro=1`).
+
+Escolhas de UX/acessibilidade: uma ideia por página (menos carga cognitiva), linguagem simples e frases curtas, textos grandes e alto contraste, botões grandes (mín. 56px) com "Voltar/Próximo" sempre no mesmo lugar, indicador "Página X de 4" mais pontos de progresso, passos ligados por uma linha (gestalt: continuidade/proximidade), botão principal destacado só na última página (poucas escolhas), navegação por teclado (setas, Esc), gesto de deslizar no celular, foco preso no diálogo e animação desativada para quem prefere menos movimento (`prefers-reduced-motion`). O texto e as ilustrações ficam em `index.html`; a lógica em `intro.js`.
+
 ## Feed com curtidas, comentários e filtro
 Cada relato no feed de ocorrências agora funciona como um mini post de rede social:
 - **👍 Curtir** — substitui o antigo botão de apoio (▲); clique novamente para descurtir. Um clique por navegador, como antes.
