@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="assets/leaflet/leaflet.css">
  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -32,6 +33,7 @@
             <a href="#categorias">Categorias</a>
             <a href="#como-funciona">Como funciona</a>
             <a href="#ocorrencias">Ocorrências</a>
+            <a href="#mapa">Mapa das ocorrências</a>
             <a href="prefeito.html">Avalie o prefeito</a>
           </div>
         </div>
@@ -185,6 +187,30 @@
     </div>
   </section>
 
+  <!-- MAPA DAS OCORRÊNCIAS -->
+  <section class="section" id="mapa">
+    <div class="wrap duo-wrap">
+      <div class="duo-head">
+        <h2>Veja onde estão os problemas da sua região</h2>
+        <p>Cada pino é um relato. Toque em um pino, ou em qualquer ponto do mapa, para ver o que a vizinhança relata e comenta por perto.</p>
+      </div>
+      <div class="balloon-panel map-panel">
+        <div class="map-toolbar">
+          <ul class="map-legend" aria-label="Legenda dos pinos">
+            <li><span class="dot dot-analise"></span>Em análise</li>
+            <li><span class="dot dot-andamento"></span>Em andamento</li>
+            <li><span class="dot dot-resolvido"></span>Resolvido</li>
+          </ul>
+          <button type="button" class="btn btn-primary" id="mapLocate">Usar minha localização</button>
+        </div>
+        <div class="map-layout">
+          <div class="map-canvas" id="occMap" role="application" aria-label="Mapa das ocorrências. As mesmas informações estão na lista ao lado."></div>
+          <aside class="map-side" id="mapSide" aria-live="polite"></aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FORMULÁRIO -->
   <section class="section" id="reportar">
     <div class="wrap report-wrap">
@@ -221,6 +247,16 @@
         <div class="field field-full">
           <label for="comentario">Comentário</label>
           <textarea id="comentario" name="comentario" rows="4" placeholder="Descreva o problema: há quanto tempo, se oferece risco, etc." required></textarea>
+        </div>
+
+        <div class="field field-full">
+          <label id="pickLabel">Localização no mapa (opcional)</label>
+          <div class="pick-bar">
+            <button type="button" class="btn btn-outline" id="pickLocate">Usar minha localização</button>
+            <button type="button" class="link-btn" id="pickClear" hidden>Remover marcação</button>
+            <span class="pick-hint" id="pickHint">Ou toque no mapa para marcar onde está o problema. Assim os vizinhos o veem no mapa.</span>
+          </div>
+          <div class="pick-map" id="pickMap" role="application" aria-labelledby="pickLabel"></div>
         </div>
 
         <div class="field field-full">
@@ -399,7 +435,9 @@
   </div>
 </div>
 
+<script src="assets/leaflet/leaflet.js"></script>
 <script src="main.js"></script>
+<script src="map.js"></script>
 <script src="intro.js"></script>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

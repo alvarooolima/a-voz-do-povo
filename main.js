@@ -361,6 +361,7 @@ function renderFeed(){
     }
   }
   updateCategoryStats();
+  if(window.refreshMap) window.refreshMap();
 
   if(filtered.length === 0){
     grid.innerHTML = '';
@@ -602,12 +603,15 @@ function setupReportForm(){
       anonimo,
       status: 'Em análise',
       apoios: 0,
-      data: new Date().toISOString()
+      data: new Date().toISOString(),
+      lat: window.reportLocation ? window.reportLocation.lat : null,
+      lng: window.reportLocation ? window.reportLocation.lng : null
     });
     saveReports(reports);
 
     form.reset();
     pendingPhoto = null;
+    if(window.resetReportLocation) window.resetReportLocation();
     document.getElementById('uploadPreview').hidden = true;
     document.getElementById('uploadEmpty').hidden = false;
     msg.classList.remove('is-error');

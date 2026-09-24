@@ -60,6 +60,11 @@ Logo abaixo do topo, dois painéis claros **iguais** lado a lado (no estilo "Mel
 
 A seção usa um container mais largo (até 1500px) para caber os dois painéis como no Reclame Aqui. Abaixo de 1280px os painéis se empilham (cada um ocupando a largura toda) e, no celular (até 760px), os cards ficam 1 por linha e o carrossel mostra 1 categoria por slide. Navega por setas, pontos, teclado (← →) ou deslizando (scroll-snap nativo, sem rotação automática). As categorias vêm do array `CATEGORIES` em `main.js`.
 
+## Mapa das ocorrências
+Ideia do Vitor: a seção "Veja onde estão os problemas da sua região" mostra um mapa (Leaflet + OpenStreetMap, embutidos em `assets/leaflet/`, sem chave de API) com um pino por relato, colorido pelo status (em análise, em andamento, resolvido). Ao tocar num pino — ou em qualquer ponto do mapa — o painel ao lado lista os relatos num raio de 400 m com **o que a vizinhança está comentando por perto**, e permite "Ver no mapa", "Abrir relato" (leva ao feed) ou "Reportar neste ponto". O botão "Usar minha localização" centraliza o mapa onde você está.
+
+Para os relatos aparecerem no mapa eles precisam de localização: o formulário de relato ganhou um seletor de local (botão "Usar minha localização" ou toque no mapa; o pino pode ser arrastado) e salva `lat`/`lng` junto com o relato. Relatos sem localização continuam no feed, mas não têm pino. A localização só é pedida quando a pessoa clica no botão e não sai do navegador. O centro do mapa e as coordenadas dos relatos de demonstração ficam no topo de `map.js` (`CITY`, `SEED_COORDS`) — troque `CITY` pelo centro da sua cidade.
+
 ## Feed com curtidas, comentários e filtro
 Cada relato no feed de ocorrências agora funciona como um mini post de rede social:
 - **👍 Curtir** — substitui o antigo botão de apoio (▲); clique novamente para descurtir. Um clique por navegador, como antes.
