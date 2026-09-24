@@ -50,14 +50,25 @@
       { enableHighAccuracy: true, timeout: 10000 }
     );
   }
+  const gPlace = (lat, lng) => 'https://www.google.com/maps/search/?api=1&query=' + lat + ',' + lng;
+  const gRoute = (lat, lng) => 'https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng;
+  const gView = (lat, lng, z) => 'https://www.google.com/maps/@?api=1&map_action=map&center=' + lat + ',' + lng + '&zoom=' + Math.round(z);
+  // Pinça no trackpad do Safari (eventos gesture*) — Chrome/Firefox já mandam como roda do mouse.
+  function enableGestureZoom(m, el){
+    let start = 0;
+    el.addEventListener('gesturestart', (e) => { e.preventDefault(); start = m.getZoom(); });
+    el.addEventListener('gesturechange', (e) => { e.preventDefault(); m.setZoom(start + Math.log2(e.scale), { animate: false }); });
+    el.addEventListener('gestureend', (e) => e.preventDefault());
+  }
   function scrollToId(id){
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.getElementById(id).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
   }
 
   // ---------- Mapa principal ----------
-  const map = L.map(mapEl, { scrollWheelZoom: false }).setView([CITY.lat, CITY.lng], CITY.zoom);
+  const map = L.map(mapEl, { scrollWheelZoom: true, zoomSnap: 0.25, zoomDelta: 0.5, wheelPxPerZoomLevel: 50 }).setView([CITY.lat, CITY.lng], CITY.zoom);
   tiles().addTo(map);
+  enableGestureZoom(map, mapEl);
   const markers = L.layerGroup().addTo(map);
   let circle = null;
   let youMarker = null;
@@ -106,7 +117,9 @@
         : '') +
       '<div class="map-item-foot"><span>' + r.apoios + ' curtidas · ' + comments.length + ' comentários</span>' +
       '<span class="map-item-actions"><button type="button" class="link-btn" data-center="' + r.id + '">Ver no mapa</button>' +
-      '<button type="button" class="link-btn" data-feed="' + r.id + '">Abrir relato</button></span></div>' +
+      '<button type="button" class="link-btn" data-feed="' + r.id + '">Abrir relato</button>' +
+      (coordsOf(r) ? '<a class="link-btn" href="' + gPlace(coordsOf(r).lat, coordsOf(r).lng) + '" target="_blank" rel="noopener">Google Maps ↗</a><a class="link-btn" href="' + gRoute(coordsOf(r).lat, coordsOf(r).lng) + '" target="_blank" rel="noopener">Como chegar ↗</a>' : '') +
+      '</span></div>' +
       '</article>';
   }
 
@@ -118,7 +131,8 @@
         .filter(x => x.d <= RADIUS)
         .sort((a, b) => a.d - b.d);
       let html = '<div class="map-side-head"><h3>Perto deste ponto</h3><span>até ' + RADIUS + ' m</span>' +
-        '<button type="button" class="link-btn" data-clear>Limpar</button></div>';
+        '<button type="button" class="link-btn" data-clear>Limpar</button></div>' +
+        '<p class="map-gpoint"><a href="' + gPlace(selected.lat.toFixed(6), selected.lng.toFixed(6)) + '" target="_blank" rel="noopener">Abrir este ponto no Google Maps ↗</a></p>';
       if(near.length === 0){
         html += '<p class="muted map-empty">Nenhum relato por aqui ainda.</p>' +
           '<button type="button" class="btn btn-primary" data-report-here>Reportar neste ponto</button>';
@@ -157,6 +171,10 @@
 
   map.on('click', (e) => select(e.latlng));
 
+  const mapG = document.getElementById('mapGmaps');
+  const updateMapG = () => { const c = map.getCenter(); mapG.href = gView(c.lat.toFixed(6), c.lng.toFixed(6), map.getZoom()); };
+  if(mapG){ map.on('moveend', updateMapG); updateMapG(); }
+
   document.getElementById('mapLocate').addEventListener('click', () => {
     locate(p => {
       map.setView([p.lat, p.lng], 16);
@@ -170,16 +188,22 @@
   const pickEl = document.getElementById('pickMap');
   const pickHint = document.getElementById('pickHint');
   const pickClear = document.getElementById('pickClear');
+  const pickG = document.getElementById('pickGmaps');
   const DEFAULT_HINT = 'Ou toque no mapa para marcar onde está o problema. Assim os vizinhos o veem no mapa.';
   let pickMap = null, pickMarker = null;
   window.reportLocation = null;
 
+  function updatePickG(){
+    if(!pickG || !window.reportLocation) return;
+    pickG.href = gPlace(window.reportLocation.lat.toFixed(6), window.reportLocation.lng.toFixed(6));
+    pickG.hidden = false;
+  }
   function setPicker(latlng, pan){
     window.reportLocation = { lat: latlng.lat, lng: latlng.lng };
     if(pickMap){
       if(!pickMarker){
         pickMarker = L.marker([latlng.lat, latlng.lng], { draggable: true, icon: pinIcon('#0C3B79'), title: 'Local do problema' }).addTo(pickMap);
-        pickMarker.on('dragend', () => { const p = pickMarker.getLatLng(); window.reportLocation = { lat: p.lat, lng: p.lng }; });
+        pickMarker.on('dragend', () => { const p = pickMarker.getLatLng(); window.reportLocation = { lat: p.lat, lng: p.lng }; updatePickG(); });
       }else{
         pickMarker.setLatLng([latlng.lat, latlng.lng]);
       }
@@ -187,6 +211,7 @@
     }
     pickHint.textContent = 'Local marcado. Você pode arrastar o pino para ajustar.';
     pickClear.hidden = false;
+    updatePickG();
   }
   window.resetReportLocation = function(){
     window.reportLocation = null;
@@ -194,11 +219,13 @@
     if(pickMap) pickMap.setView([CITY.lat, CITY.lng], CITY.zoom);
     pickHint.textContent = DEFAULT_HINT;
     pickClear.hidden = true;
+    if(pickG) pickG.hidden = true;
   };
 
   if(pickEl){
-    pickMap = L.map(pickEl, { scrollWheelZoom: false }).setView([CITY.lat, CITY.lng], CITY.zoom);
+    pickMap = L.map(pickEl, { scrollWheelZoom: true, zoomSnap: 0.25, zoomDelta: 0.5, wheelPxPerZoomLevel: 50 }).setView([CITY.lat, CITY.lng], CITY.zoom);
     tiles().addTo(pickMap);
+    enableGestureZoom(pickMap, pickEl);
     pickMap.on('click', (e) => setPicker(e.latlng, false));
     document.getElementById('pickLocate').addEventListener('click', () => locate(p => setPicker(p, true)));
     pickClear.addEventListener('click', () => window.resetReportLocation());

@@ -744,6 +744,11 @@ button{font-family:inherit;}
 .map-side-head h3{font-size:1.1rem; margin:0;}
 .map-side-head span{font-size:.85rem; color:var(--muted);}
 .map-side-head .link-btn{margin-left:auto;}
+.map-actions{display:flex; flex-wrap:wrap; gap:10px;}
+.map-actions .btn{padding:10px 18px; font-size:.9rem;}
+.map-gpoint{margin:0; font-size:.88rem;}
+.map-gpoint a{color:var(--royal); font-weight:700;}
+.map-item-actions{flex-wrap:wrap;}
 .map-hint, .map-empty{font-size:.92rem; margin:0;}
 .map-item{border:1px solid var(--line); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:6px;}
 .map-item.is-focus{border-color:var(--royal); box-shadow:0 0 0 2px var(--royal-light);}

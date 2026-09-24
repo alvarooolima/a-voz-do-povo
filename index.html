@@ -201,7 +201,10 @@
             <li><span class="dot dot-andamento"></span>Em andamento</li>
             <li><span class="dot dot-resolvido"></span>Resolvido</li>
           </ul>
-          <button type="button" class="btn btn-primary" id="mapLocate">Usar minha localização</button>
+          <div class="map-actions">
+            <a class="btn btn-outline" id="mapGmaps" href="https://www.google.com/maps" target="_blank" rel="noopener">Abrir no Google Maps ↗</a>
+            <button type="button" class="btn btn-primary" id="mapLocate">Usar minha localização</button>
+          </div>
         </div>
         <div class="map-layout">
           <div class="map-canvas" id="occMap" role="application" aria-label="Mapa das ocorrências. As mesmas informações estão na lista ao lado."></div>
@@ -254,6 +257,7 @@
           <div class="pick-bar">
             <button type="button" class="btn btn-outline" id="pickLocate">Usar minha localização</button>
             <button type="button" class="link-btn" id="pickClear" hidden>Remover marcação</button>
+            <a class="link-btn" id="pickGmaps" href="#" target="_blank" rel="noopener" hidden>Conferir no Google Maps ↗</a>
             <span class="pick-hint" id="pickHint">Ou toque no mapa para marcar onde está o problema. Assim os vizinhos o veem no mapa.</span>
           </div>
           <div class="pick-map" id="pickMap" role="application" aria-labelledby="pickLabel"></div>
