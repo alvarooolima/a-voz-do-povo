@@ -8,32 +8,32 @@ const CATEGORIES = [
   {
     nome: 'Buraco na via',
     desc: 'Buracos, afundamentos e má conservação do asfalto.',
-    icon: '<path d="M4 17c3-1 5-1 8 0s5 1 8 0" stroke="#1746D6" stroke-width="1.6" fill="none" stroke-linecap="round"/><ellipse cx="12" cy="16.4" rx="4.4" ry="1.6" stroke="#1746D6" stroke-width="1.6" fill="none"/>'
+    icon: '<path d="M4 17c3-1 5-1 8 0s5 1 8 0" stroke="#1557A6" stroke-width="1.6" fill="none" stroke-linecap="round"/><ellipse cx="12" cy="16.4" rx="4.4" ry="1.6" stroke="#1557A6" stroke-width="1.6" fill="none"/>'
   },
   {
     nome: 'Poda de árvore',
     desc: 'Galhos em risco de queda ou vegetação invadindo a via.',
-    icon: '<path d="M12 21v-7m0 0c4 0 6-2.5 6-6.5C18 4 15.5 3 12 3S6 4 6 7.5C6 11.5 8 14 12 14Z" stroke="#1746D6" stroke-width="1.6" fill="none" stroke-linejoin="round"/>'
+    icon: '<path d="M12 21v-7m0 0c4 0 6-2.5 6-6.5C18 4 15.5 3 12 3S6 4 6 7.5C6 11.5 8 14 12 14Z" stroke="#1557A6" stroke-width="1.6" fill="none" stroke-linejoin="round"/>'
   },
   {
     nome: 'Iluminação pública',
     desc: 'Postes apagados, piscando ou danificados.',
-    icon: '<path d="M12 3a5 5 0 0 1 5 5c0 2.4-1.6 3.7-2.4 4.9-.5.8-.6 1.4-.6 2.1H10c0-.7-.1-1.3-.6-2.1C8.6 11.7 7 10.4 7 8a5 5 0 0 1 5-5Z" stroke="#1746D6" stroke-width="1.6" fill="none"/><path d="M10 18h4M10.5 20.5h3" stroke="#1746D6" stroke-width="1.6" stroke-linecap="round"/>'
+    icon: '<path d="M12 3a5 5 0 0 1 5 5c0 2.4-1.6 3.7-2.4 4.9-.5.8-.6 1.4-.6 2.1H10c0-.7-.1-1.3-.6-2.1C8.6 11.7 7 10.4 7 8a5 5 0 0 1 5-5Z" stroke="#1557A6" stroke-width="1.6" fill="none"/><path d="M10 18h4M10.5 20.5h3" stroke="#1557A6" stroke-width="1.6" stroke-linecap="round"/>'
   },
   {
     nome: 'Calçada e acessibilidade',
     desc: 'Calçadas quebradas, sem rampa ou obstruídas.',
-    icon: '<path d="M4 20h16M6 20V9l4-2 4 2v11M6 20 3 20M18 20l3 0" stroke="#1746D6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+    icon: '<path d="M4 20h16M6 20V9l4-2 4 2v11M6 20 3 20M18 20l3 0" stroke="#1557A6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
   },
   {
     nome: 'Lixo e limpeza',
     desc: 'Acúmulo de lixo, entulho ou terrenos sujos.',
-    icon: '<path d="M6 7h12l-1 13H7L6 7Z" stroke="#1746D6" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M4 7h16M9 7 10 4h4l1 3" stroke="#1746D6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+    icon: '<path d="M6 7h12l-1 13H7L6 7Z" stroke="#1557A6" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M4 7h16M9 7 10 4h4l1 3" stroke="#1557A6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
   },
   {
     nome: 'Outro',
     desc: 'Qualquer outro problema que afete a sua rua ou bairro.',
-    icon: '<circle cx="12" cy="12" r="8.5" stroke="#1746D6" stroke-width="1.6" fill="none"/><path d="M12 8v5" stroke="#1746D6" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="16" r="0.9" fill="#1746D6"/>'
+    icon: '<circle cx="12" cy="12" r="8.5" stroke="#1557A6" stroke-width="1.6" fill="none"/><path d="M12 8v5" stroke="#1557A6" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="16" r="0.9" fill="#1557A6"/>'
   }
 ];
 
@@ -275,7 +275,7 @@ function renderFeed(){
       <div class="report-photo">
         ${r.foto
           ? `<img src="${r.foto}" alt="Foto enviada do problema: ${escapeHtml(r.titulo)}">`
-          : `<svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M4 17.5 8.5 12l3 3.5L15 11l5 6.5" stroke="#1746D6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="8" r="2" stroke="#1746D6" stroke-width="1.5"/><rect x="3" y="4" width="18" height="16" rx="2" stroke="#1746D6" stroke-width="1.5"/></svg>`
+          : `<svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M4 17.5 8.5 12l3 3.5L15 11l5 6.5" stroke="#1557A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="8" r="2" stroke="#1557A6" stroke-width="1.5"/><rect x="3" y="4" width="18" height="16" rx="2" stroke="#1557A6" stroke-width="1.5"/></svg>`
         }
       </div>
       <div class="report-body">

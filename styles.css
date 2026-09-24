@@ -1,12 +1,12 @@
 /* ============ TOKENS ============ */
 :root{
-  --royal: #1746D6;
-  --royal-dark: #0F2E99;
+  --royal: #1557A6;
+  --royal-dark: #0F4280;
   --royal-deep: #0A1F66;
   --royal-light: #EEF2FF;
   --royal-tint: #F5F7FF;
   --white: #FFFFFF;
-  --ink: #10143A;
+  --ink: #172033;
   --muted: #5C6180;
   --line: #E1E6F7;
   --success: #1D8A5A;
@@ -18,7 +18,7 @@
   --radius-s: 8px;
   --radius-m: 14px;
   --radius-l: 22px;
-  --shadow-card: 0 1px 2px rgba(16,20,58,0.06), 0 8px 24px rgba(16,20,58,0.06);
+  --shadow-card: 0 1px 2px rgba(23,32,51,0.06), 0 8px 24px rgba(23,32,51,0.06);
 }
 
 *{box-sizing:border-box;}
@@ -159,7 +159,7 @@ button{font-family:inherit;}
   text-align:left; cursor:pointer; font-family:inherit;
   transition:border-color .12s ease, box-shadow .12s ease;
 }
-.hero-tool:hover{border-color:var(--royal); box-shadow:0 4px 14px rgba(23,70,214,.12);}
+.hero-tool:hover{border-color:var(--royal); box-shadow:0 4px 14px rgba(21,87,166,.12);}
 .hero-tool-icon{
   width:34px; height:34px; border-radius:9px; background:var(--royal-light);
   display:flex; align-items:center; justify-content:center; flex:none;
@@ -545,7 +545,7 @@ button{font-family:inherit;}
   flex:1; border:0; background:transparent; padding:10px; border-radius:999px;
   font-weight:700; font-size:.92rem; color:var(--muted); cursor:pointer;
 }
-.auth-tab.is-active{background:var(--white); color:var(--royal); box-shadow:0 1px 3px rgba(16,20,58,.12);}
+.auth-tab.is-active{background:var(--white); color:var(--royal); box-shadow:0 1px 3px rgba(23,32,51,.12);}
 
 .account-type{display:flex; gap:6px; background:var(--royal-tint); padding:5px; border-radius:999px;}
 .type-btn{
