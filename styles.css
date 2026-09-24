@@ -37,7 +37,7 @@ h1,h2,h3{font-family:var(--font-display); margin:0 0 .4em; line-height:1.15; fon
 p{line-height:1.6;}
 .muted{color:var(--muted);}
 .muted-light{color:#C9D3F7;}
-.wrap{max-width:1160px; margin:0 auto; padding:0 24px;}
+.wrap{max-width:1500px; margin:0 auto; padding:0 24px;}
 
 .eyebrow{
   font-size:.9rem;
@@ -127,7 +127,7 @@ button{font-family:inherit;}
 /* ============ HERO ============ */
 .hero{background:var(--white);}
 .hero-inner{
-  display:grid; grid-template-columns:1.1fr .9fr; gap:56px;
+  display:grid; grid-template-columns:1fr 1fr; gap:56px;
   align-items:center;
   padding-top:40px; padding-bottom:40px;
 }
@@ -151,11 +151,11 @@ button{font-family:inherit;}
   font-size:.78rem; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
   color:var(--muted); margin:0 0 10px;
 }
-.hero-tools{display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;}
+.hero-tools{display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;}
 .hero-tool{
   display:flex; flex-direction:column; align-items:flex-start; gap:8px;
   background:var(--white); border:1.5px solid var(--line); border-radius:var(--radius-m);
-  padding:14px 12px; text-decoration:none; color:var(--ink); font-size:.82rem; font-weight:600;
+  padding:16px; min-height:115px; text-decoration:none; color:var(--ink); font-size:.9rem; font-weight:600;
   text-align:left; cursor:pointer; font-family:inherit;
   transition:border-color .12s ease, box-shadow .12s ease;
 }
@@ -170,7 +170,7 @@ button{font-family:inherit;}
 
 .hero-art{width:100%; display:flex; align-items:center;}
 .hero-visual{
-  position:relative; width:100%; aspect-ratio:.9;
+  position:relative; width:100%; aspect-ratio:1.2 / 1;
   border-radius:var(--radius-l); overflow:hidden;
   background:var(--royal-deep);
   box-shadow:var(--shadow-card);
@@ -247,6 +247,9 @@ button{font-family:inherit;}
 .duo-grid{display:grid; grid-template-columns:1fr; gap:24px; align-items:stretch;}
 @media (min-width: 1280px){ .duo-grid{grid-template-columns:repeat(2, minmax(0, 1fr));} }
 .duo-wrap{max-width:1500px;}
+.duo-head{margin-bottom:28px;}
+.duo-head h2{font-size:clamp(1.6rem, 2.6vw, 2.15rem); max-width:none; margin:0 0 .3em;}
+.duo-head p{font-size:1.05rem; color:var(--muted); margin:0; max-width:60ch;}
 .steps-grid{list-style:none; margin:0; padding:4px;}
 .step-card{cursor:default;}
 .step-card:hover{transform:none; box-shadow:var(--shadow-card);}
@@ -726,7 +729,7 @@ button{font-family:inherit;}
    só marca + hambúrguer visíveis; nav e ações do header ficam num painel único. */
 @media (max-width: 920px){
   .hero-inner{grid-template-columns:1fr;}
-  .hero-art{order:-1; max-width:340px; margin:0 auto;}
+  .hero-art{order:-1;}
   .report-wrap{grid-template-columns:1fr;}
   .report-form{grid-template-columns:1fr;}
   .feed-grid{grid-template-columns:repeat(2,1fr);}

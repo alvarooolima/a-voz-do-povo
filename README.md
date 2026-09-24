@@ -52,6 +52,9 @@ Na primeira visita, `index.html` abre uma apresentação em tela cheia, em 4 "p�
 
 Escolhas de UX/acessibilidade: uma ideia por página (menos carga cognitiva), linguagem simples e frases curtas, textos grandes e alto contraste, botões grandes (mín. 56px) com "Voltar/Próximo" sempre no mesmo lugar, indicador "Página X de 4" mais pontos de progresso, passos ligados por uma linha (gestalt: continuidade/proximidade), botão principal destacado só na última página (poucas escolhas), navegação por teclado (setas, Esc), gesto de deslizar no celular, foco preso no diálogo e animação desativada para quem prefere menos movimento (`prefers-reduced-motion`). O texto e as ilustrações ficam em `index.html`; a lógica em `intro.js`.
 
+## Largura e alinhamento (padrão Reclame Aqui)
+Todo o site usa o mesmo container de até 1500px (`.wrap`), como no Reclame Aqui: o logo, o topo (título, busca e ferramentas), o texto "Descubra o que a sua cidade está resolvendo" e os dois painéis abaixo compartilham a mesma borda esquerda e direita. No topo, a foto ficou retangular e larga (proporção 1,2:1, ≈698×582px) ocupando a metade direita, e os botões de ferramentas têm ≈115px de altura, alinhados à largura da busca. No celular e tablet a foto vai para cima, em largura total.
+
 ## Categorias e "Como funciona" lado a lado
 Logo abaixo do topo, dois painéis claros **iguais** lado a lado (no estilo "Melhores/Piores empresas" do Reclame Aqui), cada um com o título dentro e **3 cards do mesmo tamanho** (≈207×248px: ícone de 42px, selo de posição de 34px, faixa de status de 54px). À esquerda, **"O que você pode relatar"**, um carrossel de categorias (2 slides de 3 cards); à direita, **"Como funciona"**, com os 3 passos no mesmo formato de card. Cada card de categoria é clicável ("Ver relatos" daquela categoria no feed) e mostra quantos relatos e resolvidos ela tem (calculado dos relatos reais); "Reportar problema →" e "Entenda o site em 1 minuto →" ficam no rodapé de cada painel.
 
