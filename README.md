@@ -101,3 +101,10 @@ A página `historico.html` mostra um gráfico de barras com quantos anos cada pa
 - Dados do prefeito de demonstração: edite o objeto `MAYOR` em `avaliar.js`.
 - Histórico de gestões passadas: edite o array `HISTORICO_PASSADO` em `historico.js`.
 - Textos: todo o conteúdo está direto no HTML, em português.
+
+
+## Para prefeituras (`para-prefeituras.html`)
+Página no estilo "Para empresas" do Reclame Aqui, para convencer prefeituras a criar conta e transmitir segurança aos cidadãos: selo "Para prefeituras", título, texto, botão "Criar conta grátis" (leva ao cadastro já com o tipo Prefeitura, que pede CNPJ), link "Como funciona?", dois itens de confiança e um cartão branco com 3 benefícios (responder moradores, conta oficial e verificada, acompanhar o mapa). Abaixo, "Como funciona para a prefeitura" em 3 passos e um convite final. O mesmo bloco aparece no fim da home, antes do rodapé, e há links no menu "Para a prefeitura" e no rodapé.
+
+## Celular: deslizar em vez de rolar sem fim
+Inspirado no Reclame Aqui (gravação de tela do site no iPhone), no celular (≤760px) as listas viram carrosséis com "encaixe" e a próxima cartinha aparecendo pela lateral: as ocorrências da cidade, os passos de "Como funciona" e os passos da página de prefeituras. O rodapé vira acordeão ("Para você", "Para a prefeitura", "Sobre nós"). O mapa ficou mais baixo. No desktop nada muda.

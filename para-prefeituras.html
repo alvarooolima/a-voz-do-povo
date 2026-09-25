@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Para prefeituras — A Voz do Povo</title>
+<meta name="description" content="Crie a conta da sua prefeitura, responda os relatos da população e transmita segurança aos cidadãos.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230C3B79%22/><text x=%2250%22 y=%2266%22 font-size=%2258%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22>V</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-name">A Voz do Povo</span>
+    </a>
+    <div class="nav-panel" id="navPanel">
+      <nav class="main-nav" id="mainNav">
+        <div class="nav-dropdown">
+          <button type="button" class="nav-dropdown-trigger">Para você <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="nav-dropdown-menu">
+            <a href="index.html?intro=1">Entenda o site</a>
+            <a href="index.html#reportar">Reportar problema</a>
+            <a href="index.html#categorias">Categorias</a>
+            <a href="index.html#ocorrencias">Ocorrências</a>
+            <a href="index.html#mapa">Mapa das ocorrências</a>
+            <a href="prefeito.html">Avalie o prefeito</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <button type="button" class="nav-dropdown-trigger">Para a prefeitura <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="nav-dropdown-menu">
+            <a href="index.html#ocorrencias" id="navResponderLink" hidden>Responder relatos</a>
+            <a href="para-prefeituras.html">Criar conta da prefeitura</a>
+            <a href="login.html?tipo=prefeitura#criar-conta" id="navEntrarPrefeituraLink">Sou da prefeitura ou prefeito</a>
+            <a href="historico.html">Histórico de partidos</a>
+          </div>
+        </div>
+      </nav>
+      <div class="header-actions">
+        <span class="user-chip" id="userChip" hidden></span>
+        <a class="btn btn-ghost" id="loginLink" href="login.html">Entrar</a>
+        <a class="btn btn-primary" href="login.html#criar-conta">Criar conta</a>
+      </div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="gov" id="para-prefeituras">
+  <div class="wrap gov-inner">
+    <div class="gov-copy">
+      <span class="gov-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 21h16M5 21V10l7-5 7 5v11M9 21v-6h6v6" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg> Para prefeituras</span>
+      <h1 class="gov-title">Crie a conta da sua prefeitura e transmita a segurança que os cidadãos procuram</h1>
+      <p class="gov-lead">Ative a página oficial da sua prefeitura em poucos minutos. Responda os relatos da população, atualize o andamento de cada problema e mostre que a cidade está sendo ouvida.</p>
+      <div class="gov-cta">
+        <a class="btn btn-light btn-lg" href="login.html?tipo=prefeitura#criar-conta">Criar conta grátis</a>
+        <a class="gov-more" href="#como-funciona">Como funciona? <span aria-hidden="true">→</span></a>
+      </div>
+      <ul class="gov-checks">
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Cadastro rápido com o CNPJ da prefeitura</li>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Gratuito para começar</li>
+      </ul>
+    </div>
+    <div class="gov-card">
+      <div class="gov-row">
+        <span class="gov-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+        <p>Responda os moradores e mostre que a prefeitura escuta e resolve.</p>
+      </div>
+      <div class="gov-row">
+        <span class="gov-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3 4 6v5.5c0 4.5 3.2 8.2 8 9.5 4.8-1.3 8-5 8-9.5V6l-8-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.5 12 2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <p>Conta oficial e verificada: o cidadão sabe que a resposta vem da prefeitura de verdade.</p>
+      </div>
+      <div class="gov-row">
+        <span class="gov-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 20V11M12 20V5M19 20v-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+        <p>Acompanhe onde estão os problemas e o que a vizinhança comenta, bairro por bairro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section gov-how" id="como-funciona">
+  <div class="wrap">
+    <div class="duo-head">
+      <h2>Como funciona para a prefeitura</h2>
+      <p>Três passos para começar a responder a população.</p>
+    </div>
+    <ol class="gov-steps">
+      <li class="gov-step"><span class="gov-step-n" aria-hidden="true">1</span><h3>Crie a conta</h3><p>Escolha “Prefeitura”, informe o CNPJ e os dados de contato. É rápido e gratuito.</p></li>
+      <li class="gov-step"><span class="gov-step-n" aria-hidden="true">2</span><h3>Veja os relatos</h3><p>Acompanhe o que os moradores estão reportando, no feed e no mapa da cidade.</p></li>
+      <li class="gov-step"><span class="gov-step-n" aria-hidden="true">3</span><h3>Responda e atualize</h3><p>Publique uma resposta oficial e mude o status: Em análise, Em andamento ou Resolvido.</p></li>
+    </ol>
+    <div class="gov-final">
+      <p>Pronto para mostrar que a sua cidade está sendo ouvida?</p>
+      <a class="btn btn-primary btn-lg" href="login.html?tipo=prefeitura#criar-conta">Criar conta grátis</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <span class="brand-name light">A Voz do Povo</span>
+      <p class="muted-light">Um canal aberto entre quem mora na cidade e quem cuida dela.</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html#reportar">Reportar problema</a>
+      <a href="index.html#ocorrencias">Ocorrências</a>
+      <a href="prefeito.html">Avalie o prefeito</a>
+      <a href="login.html">Entrar</a>
+    </div>
+  </div>
+  <div class="wrap footer-accordion">
+    <details class="fa-item">
+      <summary>Para você</summary>
+      <a href="index.html#reportar">Reportar problema</a>
+      <a href="index.html#mapa">Mapa das ocorrências</a>
+      <a href="index.html#ocorrencias">Ocorrências</a>
+      <a href="prefeito.html">Avalie o prefeito</a>
+    </details>
+    <details class="fa-item">
+      <summary>Para a prefeitura</summary>
+      <a href="para-prefeituras.html">Criar conta da prefeitura</a>
+      <a href="historico.html">Histórico de partidos</a>
+    </details>
+    <details class="fa-item">
+      <summary>Sobre nós</summary>
+      <a href="index.html?intro=1">Entenda o site</a>
+      <a href="login.html">Entrar</a>
+    </details>
+  </div>
+  <p class="footer-copy">© <span id="year"></span> A Voz do Povo. Protótipo de demonstração.</p>
+</footer>
+<script src="main.js"></script>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
