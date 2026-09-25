@@ -889,3 +889,37 @@ button{font-family:inherit;}
   .cat-slide-grid{grid-template-columns:1fr;}
   .cat-card2{height:auto; min-height:248px;}
 }
+
+
+/* Celular e tablet: home no estilo do Reclame Aqui (limpa, texto > busca > ferramentas > foto) */
+@media (max-width: 920px){
+  .nav-toggle{
+    margin-left:auto; width:46px; height:46px; padding:0; align-items:center; justify-content:center;
+    border:1.5px solid var(--line); border-radius:14px; background:var(--white);
+  }
+  .header-search-compact.is-visible{margin-right:12px;}
+  .hero-inner{padding-top:28px; gap:24px;}
+  .hero .eyebrow, .hero-lede{display:none;}
+  .hero h1{font-size:clamp(1.4rem, 6.6vw, 2.2rem); line-height:1.15; margin-bottom:.7em;}
+  .hero h1 br{display:none;}
+
+  .hero-search{
+    flex-wrap:nowrap; border-radius:var(--radius-m); padding:6px 8px 6px 18px; margin-bottom:26px;
+    min-height:58px; gap:6px;
+  }
+  .hero-search > svg{display:none;}
+  .hero-search input{width:auto; order:0; min-width:0; font-size:1rem; padding:10px 0;}
+  .hero-search .hero-search-btn{
+    order:1; flex:none; width:44px; height:44px; padding:0; margin:0; font-size:0; line-height:0;
+    background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none'%3E%3Ccircle cx='11' cy='11' r='7' stroke='%235C6180' stroke-width='1.8'/%3E%3Cpath d='m20 20-3.5-3.5' stroke='%235C6180' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center/22px no-repeat;
+    border:0; box-shadow:none; border-radius:12px;
+  }
+  .hero-tools-label{letter-spacing:.14em; font-size:.8rem; margin-bottom:14px;}
+  .hero-tools{gap:12px;}
+  .hero-tool{
+    flex-direction:row; align-items:center; gap:12px; min-height:100px; padding:14px;
+    font-size:1rem; font-weight:500; line-height:1.25;
+  }
+  .hero-tool-icon{background:transparent; width:30px; height:30px;}
+  .hero-tool-primary .hero-tool-icon{background:transparent;}
+}
