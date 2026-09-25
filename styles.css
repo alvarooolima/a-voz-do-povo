@@ -674,23 +674,23 @@ button{font-family:inherit;}
 .intro-steps h3{font-size:1.3rem; margin:0 0 .4em;}
 .intro-steps p{font-size:1.1rem; line-height:1.5; color:var(--ink); margin:0;}
 
-.intro-features{list-style:none; margin:28px 0 0; padding:0; display:flex; flex-direction:column; gap:14px;}
-.intro-features li{
-  display:flex; align-items:center; gap:18px;
-  background:var(--royal-tint); border-radius:var(--radius-m); padding:18px 20px;
-}
+.intro-features{list-style:none; margin:48px 0 0; padding:0; display:grid; grid-template-columns:repeat(3, 1fr); gap:0;}
+.intro-features li{display:flex; flex-direction:column; align-items:flex-start; gap:18px; padding:0 32px;}
+.intro-features li:first-child{padding-left:0;}
+.intro-features li:last-child{padding-right:0;}
+.intro-features li + li{border-left:1px solid var(--line);}
 .intro-icon{
-  flex:none; width:56px; height:56px; border-radius:16px; background:var(--royal); color:var(--white);
+  flex:none; width:52px; height:52px; border-radius:16px; background:var(--royal-light); color:var(--royal);
   display:flex; align-items:center; justify-content:center;
 }
-.intro-features h3{font-size:1.25rem; margin:0 0 .2em;}
-.intro-features p{font-size:1.1rem; line-height:1.45; color:var(--ink); margin:0;}
+.intro-features h3{font-size:1.25rem; margin:0 0 .35em;}
+.intro-features p{font-size:1.05rem; line-height:1.55; color:var(--muted); margin:0;}
 
 .intro-cta{display:flex; flex-direction:column; align-items:flex-start; gap:14px; margin-top:8px;}
 .intro-cta .btn{min-height:60px; font-size:1.15rem; padding:0 30px;}
 .intro-explore{font-size:1.05rem; min-height:48px;}
-.intro-final{margin-top:30px; padding-top:24px; border-top:1px solid var(--line);}
-.intro-final .intro-lead{margin-bottom:.8em;}
+.intro-final{margin-top:64px;}
+.intro-final .intro-lead{margin-bottom:1.2em;}
 .intro-final .intro-cta{flex-direction:row; flex-wrap:wrap; align-items:center; gap:14px 16px;}
 @media (max-width:640px){ .intro-final .intro-cta{flex-direction:column; align-items:stretch;} .intro-final .intro-cta .btn{padding:0 18px;} .intro-final .intro-explore{align-self:center;} }
 
@@ -718,7 +718,9 @@ button{font-family:inherit;}
   .intro-steps li{padding-left:76px; min-height:56px;}
   .intro-step-n{position:absolute; left:0; top:0; margin:0;}
   .intro-steps li:not(:last-child)::after{top:60px; left:26px; right:auto; width:4px; height:auto; bottom:-20px;}
-  .intro-features li{padding:14px 16px; gap:14px;}
+  .intro-features{grid-template-columns:1fr; gap:28px; margin-top:32px;}
+  .intro-features li{flex-direction:row; align-items:flex-start; gap:16px; padding:0; border-left:0 !important;}
+  .intro-final{margin-top:40px;}
   .intro-bottom{grid-template-columns:1fr 1fr; grid-template-areas:"progress progress" "prev next"; row-gap:12px;}
   .intro-progress{grid-area:progress;}
   .intro-prev{grid-area:prev; justify-self:stretch;}
