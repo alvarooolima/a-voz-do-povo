@@ -45,6 +45,7 @@
       slide.classList.add(dir === 'forward' ? 'is-forward' : 'is-back');
     }
     current = next;
+    root.dataset.slide = String(current);
 
     pageLabel.textContent = 'Página ' + (current + 1) + ' de ' + total;
     dots.forEach((d, i) => {
@@ -82,6 +83,7 @@
   root.querySelectorAll('[data-intro-action]').forEach(btn => {
     btn.addEventListener('click', () => {
       const action = btn.dataset.introAction;
+      if(action === 'next'){ go(1); return; }
       close(() => {
         const target = action === 'report' ? 'reportar' : action === 'feed' ? 'mapa' : null;
         if(target) document.getElementById(target).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
@@ -124,6 +126,9 @@
 
   const params = new URLSearchParams(window.location.search);
   if(params.get('intro') === '1'){
+    open();
+  }else if(window.matchMedia('(max-width: 760px)').matches && !window.location.hash){
+    // No celular a apresentação é a página inicial: aparece a cada visita, sem atraso
     open();
   }else if(!alreadySeen() && !window.location.hash){
     setTimeout(open, 350);
