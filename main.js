@@ -587,7 +587,6 @@ function setupReportForm(){
     const titulo = document.getElementById('titulo').value.trim();
     const endereco = document.getElementById('endereco').value.trim();
     const comentario = document.getElementById('comentario').value.trim();
-    const anonimo = document.getElementById('anonimo').checked;
 
     if(!categoria || !titulo || !endereco || !comentario){
       msg.textContent = 'Preencha todos os campos obrigatórios.';
@@ -600,7 +599,7 @@ function setupReportForm(){
       id: 'r-' + Date.now(),
       categoria, titulo, endereco, comentario,
       foto: pendingPhoto,
-      anonimo,
+      anonimo: false,
       status: 'Em análise',
       apoios: 0,
       data: new Date().toISOString(),

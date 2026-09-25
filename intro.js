@@ -83,7 +83,7 @@
     btn.addEventListener('click', () => {
       const action = btn.dataset.introAction;
       close(() => {
-        const target = action === 'report' ? 'reportar' : action === 'feed' ? 'ocorrencias' : null;
+        const target = action === 'report' ? 'reportar' : action === 'feed' ? 'mapa' : null;
         if(target) document.getElementById(target).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
       });
     });
