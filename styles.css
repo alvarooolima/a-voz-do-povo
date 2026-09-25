@@ -552,7 +552,7 @@ button{font-family:inherit;}
 .timeline-feitos li{font-size:.92rem; color:var(--ink);}
 
 /* ============ FOOTER ============ */
-.site-footer{background:var(--royal-deep); color:var(--white); padding:52px 0 20px;}
+.site-footer{background:#050E22; color:var(--white); padding:52px 0 20px;}
 .footer-inner{display:flex; justify-content:space-between; gap:30px; flex-wrap:wrap; padding-bottom:30px; border-bottom:1px solid rgba(255,255,255,.15);}
 .footer-links{display:flex; gap:22px; flex-wrap:wrap;}
 .footer-links a{text-decoration:none; color:#DCE4FF; font-size:.92rem;}
@@ -942,7 +942,7 @@ button{font-family:inherit;}
 /* ============ PARA PREFEITURAS ============ */
 .btn-light{background:var(--white); color:var(--royal-deep);}
 .btn-light:hover{background:var(--royal-light);}
-.gov{background:var(--royal-deep); color:var(--white); padding:72px 0;}
+.gov{background:#0B2A5B; color:var(--white); padding:72px 0;}
 .gov-inner{display:grid; grid-template-columns:1.1fr .9fr; gap:56px; align-items:center;}
 .gov-badge{
   display:inline-flex; align-items:center; gap:8px; background:#DCE4FF; color:var(--royal-deep);
@@ -1032,3 +1032,6 @@ button{font-family:inherit;}
 @media (max-width: 900px) and (min-width: 761px){
   .gov-inner{grid-template-columns:1fr;}
 }
+
+.gov + .stack-section{padding-top:56px;}
+@media (max-width: 760px){ .gov + .stack-section{padding-top:36px;} }
